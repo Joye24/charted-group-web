@@ -6653,11 +6653,3 @@ fieldset:disabled .m-38aeed47:not([data-inverted]) {
 :where([data-charted-color-scheme="dark"]) .m-d6493fad :where(blockquote) {
   background-color: var(--charted-color-dark-8);
 }
-#hero-bg {
-  height: 200vh;
-  margin: auto;
-  padding: 60px 60px 0;
-  background-attachment: fixed !important;
-  position: relative;
-  z-index: 2;
-}

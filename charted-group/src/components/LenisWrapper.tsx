@@ -13,8 +13,8 @@ export default function LenisWrapper({
     const lenis = new Lenis({
       smoothWheel: true,
       lerp: 0.1,
-      wheelMultiplier: 0.2,
-      infinite: false,
+      wheelMultiplier: 0.8,
+      infinite: false, 
       // You can adjust other options if needed
       // e.g. duration, easing, etc.
     });
@@ -28,12 +28,12 @@ export default function LenisWrapper({
 
       // Example: let's go from center 0% up to center 180% over 1000px of scroll
       const maxScroll = 1000;
-      const maxPosition = 250;
-      const progress = Math.min(scroll / maxScroll, 1);
+      const maxPosition = 100;
+      const progress = Math.min(scroll / maxScroll, 5);
       const offset = Math.round(progress * maxPosition);
 
       // Only update background position (keep size/repeat from the markup)
-      heroBg.style.backgroundPosition = `center ${offset}%`;
+      heroBg.style.backgroundPosition = `center ${Math.min(offset, 100)}%`;
     }
 
     // Hook Lenis into the animation loop
