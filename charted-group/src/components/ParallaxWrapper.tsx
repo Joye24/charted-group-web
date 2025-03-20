@@ -19,7 +19,7 @@ export default function ParallaxWrapper({ children }: ParallaxWrapperProps) {
     // Create a new Ukiyo instance over those images
     const parallax = new Ukiyo(images, {
       scale: 1.0,
-      speed: 1.5,
+      speed: 2.5,
       // ... other options if you want
     });
     parallaxRef.current = parallax;

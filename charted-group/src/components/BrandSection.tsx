@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeUpOnScroll } from "./FadeUpOnScroll";
+import Image from 'next/image'
 
 export default function BrandSection() {
   return (
@@ -8,10 +9,10 @@ export default function BrandSection() {
       {/* Heading with multiple lines */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start text-2xl md:text-5xl font-thin mb-12 leading-relaxed">
       <div className="md:col-span-2 flex flex-col w-full">
-        <FadeUpOnScroll className="block h-auto">
+        <FadeUpOnScroll className="block h-auto duration-800">
         Charted Group is a leading luxury charter specialist, providing global solutions for your private travel requirements.
         </FadeUpOnScroll>
-        <FadeUpOnScroll className="block h-auto my-10 text-xl md:text-3xl">
+        <FadeUpOnScroll className="block h-auto my-10 text-xl md:text-2xl duration-800">
         <button
           type="button"
           className="
@@ -47,12 +48,12 @@ export default function BrandSection() {
         </FadeUpOnScroll>
       </div>
       <div className="flex w-full justify-center md:justify-end mt-20 md:mt-5 md:pt-30">
-        <FadeUpOnScroll className="block h-auto">
-        <img
+        <FadeUpOnScroll className="block h-auto duration-1500">
+        <Image
           src="/images/ce-logo-light.png"
           alt="SimplyJet Logo"
-          width="100"
-          height="auto"
+          width={100}
+          height={0}
           className="transform-none"
         />
         </FadeUpOnScroll>

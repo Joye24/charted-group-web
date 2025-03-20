@@ -1,6 +1,8 @@
 // app/components/footer/SocialFooter.tsx
 "use client";
 
+import Image from 'next/image';
+
 export default function SocialFooter() {
   return (
     <div className="flex items-center gap-[10px] relative">
@@ -16,7 +18,7 @@ export default function SocialFooter() {
                 cursor-pointer
               "
         >
-          <img
+          <Image
             src="/icons/instagram.svg"
             alt="instagram"
             width={20}
@@ -41,7 +43,7 @@ export default function SocialFooter() {
                 cursor-pointer
               "
         >
-          <img
+          <Image
             src="/icons/linkedin.svg"
             alt="linkedin"
             width={20}
@@ -62,7 +64,7 @@ export default function SocialFooter() {
                 cursor-pointer
               "
         >
-          <img
+          <Image
             src="/icons/facebook.svg"
             alt="facebook"
             width={20}

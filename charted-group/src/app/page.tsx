@@ -5,6 +5,8 @@ import { ibmPlexSerif } from "./fonts";
 
 import BrandSection from "@components/BrandSection";
 import BookingForm from "@components/BookingForm";
+import VehicleOptions from "@/components/VehicleOptions";
+import MessagingSection from "@/components/MessagingSection";
 
 export default function Landing() {
   return (
@@ -20,7 +22,7 @@ export default function Landing() {
     relative
     z-[2]"
         style={{
-          background: "url('/images/bg-hero.png') center 0% / cover no-repeat",
+          background: "url('/images/bg-hero.jpg') center 0% / cover no-repeat",
         }}
       >
         {/* Overlay */}
@@ -95,6 +97,8 @@ export default function Landing() {
         </div>
       </main>
       <BrandSection />
+      <VehicleOptions />
+      <MessagingSection />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import MobileMenu from "./MobileMenu";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function MobileHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -82,15 +84,15 @@ export default function MobileHeader() {
         </button>
 
         {/* Center: Logo */}
-        <a href="/">
-          <img
+        <Link href="/">
+          <Image
             alt="Charted Group Logo"
             src="/images/ce-logo-dark.png"
             width="40"
-            height="auto"
+            height="0"
             style={{ color: "transparent" }}
           />
-        </a>
+        </Link>
 
         {/* Right: Phone Button */}
         <button
@@ -110,7 +112,7 @@ export default function MobileHeader() {
           duration-300
         "
         >
-          <img
+          <Image
             alt="Phone"
             src="/icons/phone.svg"
             width="17"

@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import { inter } from "./fonts";
-import "./globals.css";
-import LenisWrapper from "@components/LenisWrapper";
 import Footer from "@/components/footer/Footer";
 import MenuHeader from "@/components/MenuHeader";
 import ParallaxWrapper from "@/components/ParallaxWrapper";
-import MobileHeader from "@/components/MobileHeader";
+import LenisWrapper from "@components/LenisWrapper";
+import type { Metadata } from "next";
+import { inter } from "./fonts";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Charted Group",
@@ -48,7 +47,7 @@ export default function RootLayout({
             <MenuHeader />
             {children}
           </ParallaxWrapper>
-          {/* <Footer /> */}
+          <Footer />
         </LenisWrapper>
       </body>
     </html>

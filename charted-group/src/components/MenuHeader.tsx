@@ -1,6 +1,7 @@
 // MenuHeader.tsx
 "use client";
 
+import Link from "next/link";
 import MobileHeader from "./MobileHeader";
 
 export default function MenuHeader() {
@@ -29,7 +30,7 @@ export default function MenuHeader() {
       "
       >
         {/* Logo */}
-        <a href="/">
+        <Link href="/">
           <img
             alt="Charted Group Logo"
             src="/images/ce-logo-dark.png"
@@ -37,7 +38,7 @@ export default function MenuHeader() {
             height="auto"
             className="w-[40px]"
           />
-        </a>
+        </Link>
 
         <div className="flex items-center gap-2">
           {/* Menu items */}
