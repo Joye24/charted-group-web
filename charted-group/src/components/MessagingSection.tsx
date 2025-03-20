@@ -7,7 +7,7 @@ import { FadeUpOnScroll } from "./FadeUpOnScroll";
 /**
  * Example usage with multiple sections
  */
-export default function ScrollAccordionExample() {
+export default function MessagingSection() {
   const slides = [
     {
       title: "We Care",
@@ -35,7 +35,7 @@ export default function ScrollAccordionExample() {
         <FadeUpOnScroll
         key={i}
         threshold={slide.threshold}
-        className={`${ibmPlexSerif.className} ${slide.position} duration-800 sticky py-15 lg:py-25 bg-slate-950 mb-30`}
+        className={`${ibmPlexSerif.className} ${slide.position} duration-800 sticky py-15 lg:py-25 bg-slate-950 mb-30 border-t-1 border-t-gray-400`}
       >	
         <h2 className="text-5xl lg:text-8xl font-thin mb-4 lg:pr-[50%]">{slide.title}</h2>
         <p className="text-2xl lg:text-3xl font-thin mx-2 lg:pl-[50%] lg:pt-10">{slide.message}</p>

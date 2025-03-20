@@ -43,7 +43,7 @@ export default function VehicleOptions() {
       {/* Embla container (overflow hidden) */}
       <div
         className="overflow-hidden relative"
-        ref={emblaRef /* reference for Embla to attach */}
+        ref={emblaRef}
       >
         {/* Embla slide wrapper (flex container) */}
         <div className="flex gap-6 md:gap-6 px-10 md:px-25">

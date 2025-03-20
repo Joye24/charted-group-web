@@ -1,0 +1,31 @@
+<svg 
+  width="32" 
+  height="32" 
+  viewBox="0 0 32 32" 
+  fill="none" 
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Define a horizontal gradient that goes from left (0%) to right (100%). 
+       The left half (0%..50%) is #ECB443, the right half (50%..100%) is transparent. -->
+  <defs>
+    <linearGradient 
+      id="halfStarGradient" 
+      x1="0" 
+      y1="0" 
+      x2="32" 
+      y2="0" 
+      gradientUnits="userSpaceOnUse"
+    >
+      <stop offset="0%" stop-color="#ECB443" />
+      <stop offset="50%" stop-color="#ECB443" />
+      <stop offset="50%" stop-color="transparent" />
+      <stop offset="100%" stop-color="transparent" />
+    </linearGradient>
+  </defs>
+
+  <!-- Use the same star path, but fill with our gradient -->
+  <path 
+    d="M16 1.33398L19.7618 12.1563L31.2169 12.3897L22.0868 19.3117L25.4046 30.2783L16 23.734L6.59544 30.2783L9.91324 19.3117L0.783095 12.3897L12.2382 12.1563L16 1.33398Z" 
+    fill="url(#halfStarGradient)"
+  />
+</svg>

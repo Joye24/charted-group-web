@@ -1,11 +1,11 @@
 // app/Footer.tsx
 "use client";
 
+import Image from "next/image";
 import CopyRightFooter from "./CopyrightFooter";
-import Image from 'next/image';
 // import LocationsFooter from "./LocationsFooter";
-// import PartnersFooter from "./PartnersFooter";
-// import SocialFooter from "./SocialFooter";
+import PartnersFooter from "./PartnersFooter";
+import SocialFooter from "./SocialFooter";
 
 export default function Footer() {
   return (
@@ -17,29 +17,36 @@ export default function Footer() {
         pt-[90px]
         pb-[50px]
         min-h-[20vh]
-      "
-    >
+      ">
       {/** Top section with 4 columns */}
-      <div className="flex items-center justify-center pb-[50px] relative">
-        {/* Logo */}
-        <div className="flex flex-col items-start justify-center lg:justify-left lg:w-1/3">
+      <div
+        className="
+    flex
+    flex-col
+    lg:flex-row 
+    items-center
+    gap-10
+    justify-center
+    pb-[50px]
+    relative
+  ">
+        <div className="w-full lg:w-1/3 flex justify-center lg:justify-start">
           <Image
             src="/images/ce-logo-light.png"
             alt="Simply Jet Logo"
             width="50"
             height="0"
-            className="h-[auto] w-[50px]"
+            className="h-auto w-[50px]"
           />
         </div>
-        <div className="flex flex-col items-center lg:w-1/3">
-          {/* Social Icons */}
-          {/* <SocialFooter /> */}
+        <div className="w-full lg:w-1/3 flex justify-center">
+          <SocialFooter />
         </div>
-        <div className="flex flex-col items-end lg:w-1/3">
-          {/* Partners */}
-          {/* <PartnersFooter /> */}
+        <div className="w-full lg:w-1/3 flex justify-center lg:justify-end">
+          <PartnersFooter />
         </div>
       </div>
+
       {/** Middle section: offices/addresses */}
       {/* <LocationsFooter /> */}
       {/* Bottom-most row: Terms, Data policy, etc. */}

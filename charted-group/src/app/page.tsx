@@ -7,6 +7,7 @@ import BrandSection from "@components/BrandSection";
 import BookingForm from "@components/BookingForm";
 import VehicleOptions from "@/components/VehicleOptions";
 import MessagingSection from "@/components/MessagingSection";
+import Testimonials from "@/components/Testimonials";
 
 export default function Landing() {
   return (
@@ -99,6 +100,7 @@ export default function Landing() {
       <BrandSection />
       <VehicleOptions />
       <MessagingSection />
+      <Testimonials />
     </div>
   );
 }
