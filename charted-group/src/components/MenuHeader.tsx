@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import MobileHeader from "./MobileHeader";
 
 export default function MenuHeader() {
@@ -27,15 +28,14 @@ export default function MenuHeader() {
         transition
         ease-in-out
         duration-300
-      "
-      >
+      ">
         {/* Logo */}
         <Link href="/">
-          <img
+          <Image
             alt="Charted Group Logo"
             src="/images/ce-logo-dark.png"
             width="40"
-            height="auto"
+            height="0"
             className="w-[40px]"
           />
         </Link>
@@ -44,8 +44,8 @@ export default function MenuHeader() {
           {/* Menu items */}
           <div className="flex items-center gap-1 font-medium relative">
             <div className="relative">
-              <a
-                href="#"
+              <Link
+                href="/about"
                 className="
                 flex
                 items-center
@@ -58,15 +58,14 @@ export default function MenuHeader() {
                 hover:bg-gray-200
                 shadow-inherit
                 text-blue-950
-              "
-              >
+              ">
                 About Us
-              </a>
+              </Link>
             </div>
 
             <div className="relative">
-              <a
-                href="#"
+              <Link
+                href="/services"
                 className="
                 flex
                 items-center
@@ -79,10 +78,9 @@ export default function MenuHeader() {
                 hover:bg-gray-200
                 shadow-inherit
                 text-blue-950
-              "
-              >
+              ">
                 Services
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -101,13 +99,11 @@ export default function MenuHeader() {
               px-6
               py-2
               cursor-pointer
-            "
-            >
+            ">
               <span
                 className="
               text-[12px] 
-              font-[600]"
-              >
+              font-[600]">
                 BOOK YOUR RIDE
               </span>
             </button>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 interface MobileMenuProps {
@@ -41,9 +42,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           transition-transform
           duration-250
           ease-in-out
-          ${
-            isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-          }
+          ${isOpen ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}
         `}
         style={{ borderRadius: "0px" }} // or something else if needed
       >
@@ -52,12 +51,11 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <div className="mt-25 space-y-6 overflow-auto">
             {/* Phone / Contact Section */}
             <div className="flex flex-col gap-2 rounded-2xl bg-white/80 p-4">
-              <a
-                href="#"
-                target="_blank"
+              <Link
+                onClick={onClose}
+                href="/about"
                 rel="noreferrer"
-                className="block w-full no-underline"
-              >
+                className="block w-full no-underline">
                 <p
                   className="
                     flex items-center gap-3
@@ -66,8 +64,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     text-blue-950
                     cursor-pointer
                     hover:bg-gray-200
-                  "
-                >
+                  ">
                   About Us
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -75,8 +72,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    className="h-6 w-6 ml-auto"
-                  >
+                    className="h-6 w-6 ml-auto">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -84,14 +80,13 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     />
                   </svg>
                 </p>
-              </a>
+              </Link>
 
-              <a
-                href="#"
-                target="_blank"
+              <Link
+                onClick={onClose}
+                href="/services"
                 rel="noreferrer"
-                className="block w-full no-underline"
-              >
+                className="block w-full no-underline">
                 <p
                   className="flex 
                             items-center 
@@ -101,8 +96,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                             px-4
                             text-blue-950
                             cursor-pointer
-                            hover:bg-gray-200"
-                >
+                            hover:bg-gray-200">
                   Services
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -110,8 +104,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     viewBox="0 0 24 24"
                     strokeWidth="1.5"
                     stroke="currentColor"
-                    className="h-6 w-6 ml-auto"
-                  >
+                    className="h-6 w-6 ml-auto">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -119,7 +112,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                     />
                   </svg>
                 </p>
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -145,21 +138,18 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                 font-normal
                 h-[50px]
                 px-6
-              "
-            >
+              ">
               <svg
                 width="25"
                 height="18"
                 fill="none"
                 className="mr-2"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+                xmlns="http://www.w3.org/2000/svg">
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
-                  fill="currentColor"
-                ></path>
+                  fill="currentColor"></path>
               </svg>
 
               <span>Book Your Ride</span>

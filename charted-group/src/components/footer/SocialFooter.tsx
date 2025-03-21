@@ -1,12 +1,15 @@
 // app/components/footer/SocialFooter.tsx
 "use client";
 
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function SocialFooter() {
   return (
     <div className="flex items-center gap-[10px] relative">
-      <a href="https://www.instagram.com/#" target="_blank" rel="noreferrer">
+      <a
+        href="https://www.instagram.com/#"
+        target="_blank"
+        rel="noreferrer">
         <button
           type="button"
           aria-label="Instagram"
@@ -16,8 +19,7 @@ export default function SocialFooter() {
                 rounded-full
                 p-[10px]
                 cursor-pointer
-              "
-        >
+              ">
           <Image
             src="/icons/instagram.svg"
             alt="instagram"
@@ -30,8 +32,7 @@ export default function SocialFooter() {
       <a
         href="https://ch.linkedin.com/company/#"
         target="_blank"
-        rel="noreferrer"
-      >
+        rel="noreferrer">
         <button
           type="button"
           aria-label="LinkedIn"
@@ -41,8 +42,7 @@ export default function SocialFooter() {
                 rounded-full
                 p-[10px]
                 cursor-pointer
-              "
-        >
+              ">
           <Image
             src="/icons/linkedin.svg"
             alt="linkedin"
@@ -52,7 +52,10 @@ export default function SocialFooter() {
           />
         </button>
       </a>
-      <a href="https://www.facebook.com/#" target="_blank" rel="noreferrer">
+      <a
+        href="https://www.facebook.com/#"
+        target="_blank"
+        rel="noreferrer">
         <button
           type="button"
           aria-label="Facebook"
@@ -62,8 +65,7 @@ export default function SocialFooter() {
                 rounded-full
                 p-[10px]
                 cursor-pointer
-              "
-        >
+              ">
           <Image
             src="/icons/facebook.svg"
             alt="facebook"

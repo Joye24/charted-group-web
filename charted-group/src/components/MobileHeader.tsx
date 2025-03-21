@@ -25,8 +25,7 @@ export default function MobileHeader() {
         transition-transform
         duration-[400ms]
         transform
-      "
-      >
+      ">
         {/* Left: Burger Icon Button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -44,8 +43,7 @@ export default function MobileHeader() {
     shadow-[inset_0_0.5px_0.5px_rgba(0,0,0,0.1)]
     transition
     duration-300
-  "
-        >
+  ">
           {menuOpen ? (
             // 'Close' icon if menu is open
             <svg
@@ -54,8 +52,7 @@ export default function MobileHeader() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="#1d2b4d"
-              className="size-6"
-            >
+              className="size-6">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -74,8 +71,7 @@ export default function MobileHeader() {
               strokeWidth="1"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="tabler-icon tabler-icon-menu-2"
-            >
+              className="tabler-icon tabler-icon-menu-2">
               <path d="M4 6l16 0" />
               <path d="M4 12l16 0" />
               <path d="M4 18l16 0" />
@@ -110,8 +106,7 @@ export default function MobileHeader() {
           shadow-[inset_0_0.5px_0.5px_rgba(0,0,0,0.1)]
           transition
           duration-300
-        "
-        >
+        ">
           <Image
             alt="Phone"
             src="/icons/phone.svg"
@@ -121,7 +116,10 @@ export default function MobileHeader() {
           />
         </button>
       </div>
-      <MobileMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu
+        isOpen={menuOpen}
+        onClose={() => setMenuOpen(false)}
+      />
     </>
   );
 }

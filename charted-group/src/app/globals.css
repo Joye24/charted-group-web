@@ -39,15 +39,12 @@ html.lenis body {
   --charted-color-black: #000;
   --charted-font-family: Inter, sans-serif;
   --charted-font-family-headings: Inter, sans-serif;
-  --charted-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji;
-  --charted-font-family-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    Liberation Mono, Courier New, monospace;
-  --charted-font-family-headings: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
-    Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --charted-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+  --charted-font-family-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  --charted-font-family-headings: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
   --charted-heading-font-weight: 700;
   --charted-color-text: var(--charted-color-white);
-  --charted-color-body: var(--charted-color-white);
+  --charted-color-body: oklch(0.129 0.042 264.695);
 }
 
 body {
