@@ -7,8 +7,9 @@ import { inter } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Charted Group",
-  description: "Travel in Luxury",
+  title: "Charted Group | Transportation - Think Charted",
+  description:
+    "Experience premium ground transportation in Ireland with our on-demand fleet, fare calculator, and hospitality services. Charted Group ensures seamless, reliable, and luxurious travel for business, events, and tours.",
 };
 
 export default function RootLayout({
@@ -17,29 +18,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.className}>
+    <html
+      lang="en"
+      className={inter.className}>
       <head>
-        <title>Charted Group - Luxury Trips</title>
         <meta charSet="utf-8"></meta>
-        <meta property="og:title" content="Charted Group"></meta>
+        <meta
+          property="og:title"
+          content={`${metadata.title}`}></meta>
 
-        <meta property="og:site_name" content="Charted Group"></meta>
         <meta
-          name="description"
-          content="Charted Group. Get your quote now. ✆ +353000 "
-        ></meta>
-        <meta property="og:description" content=""></meta>
-        <meta property="og:locale" content="en"></meta>
-        <meta name="robots" content="index, follow, nocache"></meta>
-        <meta name="googlebot" content="index, follow, nocache"></meta>
+          property="og:site_name"
+          content={`${metadata.title}`}></meta>
+        <meta
+          name="og:description"
+          content={`${metadata.description}`}></meta>
+        <meta
+          property="og:locale"
+          content="en"></meta>
+        <meta
+          name="robots"
+          content="index, follow, nocache"></meta>
+        <meta
+          name="googlebot"
+          content="index, follow, nocache"></meta>
         <meta
           name="viewport"
-          content="width=device-width, initial-scale=1"
-        ></meta>
+          content="width=device-width, initial-scale=1"></meta>
         <meta
           name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
-        ></meta>
+          content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"></meta>
       </head>
       <body>
         <LenisWrapper>

@@ -23,10 +23,10 @@ export default function Landing() {
                   relative
                   z-[2]"
         style={{
-          background: "url('/images/bg-hero.jpg') center 0% / cover no-repeat",
+          background: "url('/images/bg-hero.jpeg') center 0% / cover no-repeat",
         }}>
         {/* Overlay */}
-        <div className="absolute inset-0 bg-white/30 w-full h-full" />
+        <div className="absolute inset-0 bg-white/25 w-full h-full" />
 
         {/* Sticky container with left title & right booking tool */}
         <div
