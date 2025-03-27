@@ -22,9 +22,9 @@ export default function BookingForm() {
   const [passUnder12, setPassUnder12] = useState(0);
 
   // Step 4: Pre-book or Hail
-  const [bookingType, setBookingType] = useState<"prebook" | "hail">("prebook");
+  const [bookingType] = useState<"prebook" | "hail">("prebook");
 
-  setBookingType("prebook");
+  //setBookingType("prebook");
 
   const minBookingDate = dayjs().add(1, "day");
 
