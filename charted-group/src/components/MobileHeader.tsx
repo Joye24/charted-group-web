@@ -5,6 +5,7 @@ import Image from "next/image";
 
 export default function MobileHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [phoneMenuOpen, setPhoneMenuOpen] = useState(false);
 
   return (
     <>
@@ -28,7 +29,7 @@ export default function MobileHeader() {
       ">
         {/* Left: Burger Icon Button */}
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => (phoneMenuOpen ? setPhoneMenuOpen(!phoneMenuOpen) : setMenuOpen(!menuOpen))}
           type="button"
           className="
     text-[rgba(0,0,0,0.1)]
@@ -44,7 +45,7 @@ export default function MobileHeader() {
     transition
     duration-300
   ">
-          {menuOpen ? (
+          {menuOpen || phoneMenuOpen ? (
             // 'Close' icon if menu is open
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -92,6 +93,7 @@ export default function MobileHeader() {
 
         {/* Right: Phone Button */}
         <button
+          onClick={() => setPhoneMenuOpen(!phoneMenuOpen)}
           type="button"
           className="
           text-[rgba(0,0,0,0.1)]
@@ -118,6 +120,7 @@ export default function MobileHeader() {
       </div>
       <MobileMenu
         isOpen={menuOpen}
+        isPhoneMenuOpen={phoneMenuOpen}
         onClose={() => setMenuOpen(false)}
       />
     </>
