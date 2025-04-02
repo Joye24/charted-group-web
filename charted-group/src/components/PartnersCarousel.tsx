@@ -45,7 +45,7 @@ export default function PartnersCarousel() {
   const partnerLogos = [...logos, ...logos];
 
   return (
-    <div className="w-full bg-gray-200 my-20 mb-40 py-5">
+    <div className="w-full bg-gray-200 my-20 mb-60 py-5">
       <div
         className="overflow-hidden"
         ref={emblaRef}>
@@ -65,6 +65,8 @@ export default function PartnersCarousel() {
               <Image
                 src={src}
                 alt={`Partner ${i}`}
+                width={100}
+                height={0}
                 className="
                   grayscale
                   hover:grayscale-0
