@@ -1,24 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { usePathname } from "next/navigation";
 import BookingForm from "./BookingForm"; // or wherever your form is
 
 export default function BookARideButton() {
-  const pathName = usePathname();
   const [showModal, setShowModal] = useState(false);
 
   function handleClick() {
-    // Are we on the homepage?
-    if (pathName === "/") {
-      window.location.reload();
-
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      // Show the modal
-      setShowModal(true);
-    }
+    setShowModal(true);
   }
 
   function closeModal() {

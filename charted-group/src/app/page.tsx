@@ -8,6 +8,7 @@ import BookingForm from "@components/BookingForm";
 import VehicleCarousel from "@/components/VehicleCarousel";
 import MessagingSection from "@/components/MessagingSection";
 import Testimonials from "@/components/Testimonials";
+import PartnersCarousel from "@/components/PartnersCarousel";
 
 export default function Landing() {
   return (
@@ -23,7 +24,7 @@ export default function Landing() {
                   relative
                   z-[2]"
         style={{
-          background: "url('/images/car-dash1.jpeg') center 0% / cover no-repeat",
+          background: "url('/images/car-dash1.jpg') center 0% / cover no-repeat",
         }}>
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 w-full h-full" />
@@ -76,6 +77,7 @@ export default function Landing() {
       <BrandSection />
       <VehicleCarousel />
       <MessagingSection />
+      <PartnersCarousel />
       <Testimonials />
     </div>
   );
