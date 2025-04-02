@@ -23,10 +23,10 @@ export default function Landing() {
                   relative
                   z-[2]"
         style={{
-          background: "url('/images/bg-hero.jpeg') center 0% / cover no-repeat",
+          background: "url('/images/car-dash1.jpeg') center 0% / cover no-repeat",
         }}>
         {/* Overlay */}
-        <div className="absolute inset-0 bg-white/25 w-full h-full" />
+        <div className="absolute inset-0 bg-black/40 w-full h-full" />
 
         {/* Sticky container with left title & right booking tool */}
         <div
@@ -45,9 +45,9 @@ export default function Landing() {
           min-w-full
           text-center lg:text-left"
           style={{ zIndex: 1 }}>
-          <div className={`${ibmPlexSerif.className} w-full lg:w-1/2 lg:max-w-[608px] lg:pl-[30px] lg:pr-12 text-[#191F32]`}>
-            <h1 className="text-[inherit] text-7xl leading-tight mb-4 font-light">Travel In Luxury</h1>
-            <h2 className="text-[inherit] text-3xl font-light leading-tight">Seamlessly travel. Effortlessly arrive</h2>
+          <div className={`${ibmPlexSerif.className} w-full lg:w-1/2 lg:max-w-[620px] lg:pl-[30px] lg:pr-10 text-white`}>
+            <h1 className="text-[inherit] text-4xl md:text-7xl leading-tight mb-4 font-light">Introducing Private Transfers in a New Way.</h1>
+            <h2 className="text-[inherit] text-2xl md:text-3xl font-light leading-tight">Experts in Luxury Ground Transportation</h2>
           </div>
           <BookingForm />
         </div>

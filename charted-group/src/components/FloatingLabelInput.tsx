@@ -14,7 +14,7 @@ interface FloatingLabelInputProps {
  */
 export default function FloatingLabelInput({ label, id, value, onChange, placeholder }: FloatingLabelInputProps) {
   return (
-    <div className="mt-6 w-full">
+    <div className="w-full mb-2">
       <FormControl
         variant="outlined"
         className="w-full">

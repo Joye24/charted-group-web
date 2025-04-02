@@ -1,49 +1,59 @@
 "use client";
 
 import React, { useState } from "react";
-import PassengerSelector from "./PassengerSelector";
 import FloatingLabelInput from "./FloatingLabelInput";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import Link from "next/link";
 
 export default function BookingForm() {
   const [legType, setLegType] = useState<"oneWay" | "roundTrip">("oneWay");
+
+  // Step 1: Origin, Destination
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
 
-  // Step 2: Standard, Premium, Special
+  // Checkbox for flight number
+  const [flightNumberEnabled, setFlightNumberEnabled] = useState(false);
+  const [flightNumber, setFlightNumber] = useState("");
+
+  // Step 2: Date
+  const minBookingDate = dayjs().add(1, "day");
+  const [selectedDate, setSelectedDate] = useState(dayjs(minBookingDate));
+
+  // Step 3: Time Period
   const [timePeriod, setTimePeriod] = useState<"standard" | "premium" | "special">("standard");
 
-  // Step 3: # Passengers Over/Under 12
-  const [passOver12, setPassOver12] = useState(1);
-  const [passUnder12, setPassUnder12] = useState(0);
+  // // Step 4: Passengers
+  // const [passOver12, setPassOver12] = useState(1);
+  // const [passUnder12, setPassUnder12] = useState(0);
 
-  // Step 4: Pre-book or Hail
+  // Step 5: Vehicle
+  const [vehicleOption, setVehicleOption] = useState<"V-Class" | "S-Class" | "E-Class">("V-Class");
+
+  // Booking Type
   const [bookingType] = useState<"prebook" | "hail">("prebook");
-
-  //setBookingType("prebook");
-
-  const minBookingDate = dayjs().add(1, "day");
 
   function handleNext() {
     // For now, just console log
     console.log({
       legType,
       origin,
+      selectedDate: selectedDate.format("YYYY-MM-DD"),
       destination,
+      flightNumber: flightNumberEnabled ? flightNumber : "N/A",
       timePeriod,
-      passOver12,
-      passUnder12,
       bookingType,
+      vehicleOption,
     });
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/90 lg:bg-white/70">
-      {/* Leg Type Switch (One way, Round trip, Multi city) */}
+    <div className="flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/90 lg:bg-white/85 h-full">
+      {/* Leg Type Switch (One way, Round trip) */}
       <div className="flex gap-10 mb-6">
         <span
           className={`
@@ -51,14 +61,16 @@ export default function BookingForm() {
             border-b-2 
             cursor-pointer
             ${legType === "oneWay" ? "border-slate-950 font-bold" : "border-transparent font-light"}
-        `}
+          `}
           onClick={() => setLegType("oneWay")}>
           One Way
         </span>
 
         <span
           className={`
-            text-[#191F32] cursor-pointer border-b-2
+            text-[#191F32]
+            cursor-pointer
+            border-b-2
             ${legType === "roundTrip" ? "border-slate-950 font-bold" : "border-transparent font-light"}
           `}
           onClick={() => setLegType("roundTrip")}>
@@ -68,7 +80,7 @@ export default function BookingForm() {
 
       {/* Booking Form Container */}
       <div className="flex flex-col gap-5 w-full text-left">
-        {/* Step 1: Origin / Destination */}
+        {/* Row 1: Origin (left), Date (right) */}
         <div className="flex flex-col lg:flex-row lg:gap-5">
           {/* Origin */}
           <div className="w-full">
@@ -92,22 +104,23 @@ export default function BookingForm() {
             />
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row gap-5">
-          <div className="flex flex-col w-full">
+
+        {/* Row 2: Date (left), Time Period (right) */}
+        <div className="flex flex-col md:flex-row gap-5">
+          {/* Destination */}
+          <div className="w-full flex flex-col">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Date"
-                defaultValue={minBookingDate}
+                value={selectedDate}
+                onChange={(val) => val && setSelectedDate(val)}
                 format="DD/MM/YYYY"
                 minDate={minBookingDate}
-                slotProps={{
-                  textField: {
-                    helperText: "DD/MM/YYYY",
-                  },
-                }}
               />
             </LocalizationProvider>
           </div>
+
+          {/* Time Period */}
           <div className="flex flex-col w-full">
             <FormControl
               fullWidth
@@ -121,46 +134,81 @@ export default function BookingForm() {
                 label="Time Period"
                 onChange={(e) => setTimePeriod(e.target.value as "standard" | "premium" | "special")}>
                 <MenuItem value="standard">Standard (08:00 - 20:00, Mon-Sat)</MenuItem>
-                <MenuItem value="premium">Premium (20:00 - 08:00, Mon-Sun + Pub Hol)</MenuItem>
-                <MenuItem value="special">Special (Sat &amp; Sun, 00:00 - 04:00 + Xmas Times)</MenuItem>
+                <MenuItem value="premium">Premium (20:00 - 08:00, plus Sunday/PubHol)</MenuItem>
+                <MenuItem value="special">Special (Sat &amp; Sun, 00:00 - 04:00)</MenuItem>
               </Select>
             </FormControl>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-5 items-center">
-          <PassengerSelector
-            label="Passengers Over 12"
-            value={passOver12}
-            onChange={setPassOver12}
-            min={1}
-            max={10}
-          />
-          <PassengerSelector
-            label="Passengers Under 12"
-            value={passUnder12}
-            onChange={setPassUnder12}
-            min={0}
-            max={10}
-          />
-          {/* Bottom row: Next Button */}
-          <div className="flex justify-center lg:justify-end w-full">
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex flex-col w-full">
+            {/* If checked, show the flight number text field */}
+            {flightNumberEnabled && (
+              <FloatingLabelInput
+                label="Flight Number"
+                placeholder="e.g. EI123"
+                id="flightNumber"
+                value={flightNumber}
+                onChange={setFlightNumber}
+              />
+            )}
+
+            {/* Checkbox for flight number */}
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="flightCheckbox"
+                checked={flightNumberEnabled}
+                onChange={(e) => setFlightNumberEnabled(e.target.checked)}
+              />
+
+              <label
+                htmlFor="flightCheckbox"
+                className="text-xs text-[#191F32] cursor-pointer">
+                Add Flight Number
+              </label>
+            </div>
+          </div>
+          <div className="w-full flex flex-col">
+            <div className="flex flex-col w-full mb-5">
+              <FormControl
+                fullWidth
+                variant="outlined"
+                className="mt-2 mb-5">
+                <InputLabel id="vehicle-label">Vehicle*</InputLabel>
+                <Select
+                  labelId="timvehicleePeriod-label"
+                  id="vehicle*"
+                  value={vehicleOption}
+                  label="Vehicle"
+                  required
+                  onChange={(e) => setVehicleOption(e.target.value as "V-Class" | "S-Class" | "E-Class")}>
+                  <MenuItem value="V-Class">V-Class</MenuItem>
+                  <MenuItem value="S-Class">S-Class</MenuItem>
+                  <MenuItem value="E-Class">E-Class</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <button
               onClick={handleNext}
               className="
-              flex
-              items-center
-              bg-[#191F32]
-              text-white
-              rounded-full
-              uppercase
-              tracking-[2px]
-              font-light
-              text-[15px]
-              h-[60px]
-              px-[30px]
-              py-[18px]
-              hover:opacity-80
-            ">
+                flex
+                max-w-full md:max-w-[150px]
+                items-center
+                bg-[#191F32]
+                text-white
+                rounded-full
+                uppercase
+                tracking-[2px]
+                font-light
+                text-[15px]
+                h-[60px]
+                px-[30px]
+                py-[18px]
+                hover:opacity-80
+                text-center
+                justify-center
+              ">
               <svg
                 width="25"
                 height="18"
@@ -176,6 +224,16 @@ export default function BookingForm() {
               </svg>
               Next
             </button>
+            <div className="mt-4 flex w-full text-center md:text-left justify-center md:justify-start">
+              <Link
+                href="/services#fare-calculation"
+                className="
+                text-xs
+                text-blue-950
+              ">
+                See Fare Calculation
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import MobileHeader from "./MobileHeader";
+import BookARideButton from "./BookARideButton";
 
 export default function MenuHeader() {
   return (
@@ -85,29 +86,7 @@ export default function MenuHeader() {
           </div>
 
           {/* BOOK A FLIGHT Button */}
-          <div className="relative inline-block z-1">
-            <button
-              type="button"
-              className="
-            bg-slate-800
-              text-white
-              hover:opacity-80
-              rounded-full
-              border-0
-              tracking-[3px]
-              ml-2.5
-              px-6
-              py-2
-              cursor-pointer
-            ">
-              <span
-                className="
-              text-[12px] 
-              font-[600]">
-                BOOK YOUR RIDE
-              </span>
-            </button>
-          </div>
+          <BookARideButton />
         </div>
       </div>
     </>

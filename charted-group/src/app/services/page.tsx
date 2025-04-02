@@ -3,6 +3,7 @@
 
 import { FadeUpOnScroll } from "@/components/FadeUpOnScroll";
 import { ibmPlexSerif } from "../fonts";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -71,14 +72,30 @@ export default function About() {
         lg:px-60
         quote-wrapper
       ">
-        <div className="flex flex-col mb-4">
+        {/* <div className="flex flex-col mb-4">
           <div className="flex items-start gap-2">
             <FadeUpOnScroll className="duration-2000">
               <p className={`${ibmPlexSerif.className} leading-relaxed text-xl lg:text-4xl font-thin`}>Make Your Booking</p>
             </FadeUpOnScroll>
           </div>
-        </div>
+        </div> */}
       </div>
+      <FadeUpOnScroll className="duration-1000">
+        <div className="flex flex-col gap-10 px-10 lg:px-60 py-10">
+          <h1 className={`${ibmPlexSerif.className} items-center text-center leading-relaxed text-xl lg:text-4xl font-thin w-full`}>
+            Our pricing is Competitive & Transparent
+          </h1>
+          <div className="flex items-center justify-center w-full">
+            <Image
+              src="/images/fare-calculation.png"
+              alt="fare-calculation"
+              width={605}
+              height={602}
+              className="object-contain"
+            />
+          </div>
+        </div>
+      </FadeUpOnScroll>
     </div>
   );
 }
