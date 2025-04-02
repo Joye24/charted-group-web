@@ -90,6 +90,7 @@ export default function BookingForm() {
               placeholder="Enter your origin"
               value={origin}
               onChange={setOrigin}
+              required={true}
             />
           </div>
 
@@ -101,6 +102,7 @@ export default function BookingForm() {
               id="destination"
               value={destination}
               onChange={setDestination}
+              required={true}
             />
           </div>
         </div>
@@ -111,7 +113,7 @@ export default function BookingForm() {
           <div className="w-full flex flex-col">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
-                label="Date"
+                label="Departure Date*"
                 value={selectedDate}
                 onChange={(val) => val && setSelectedDate(val)}
                 format="DD/MM/YYYY"
@@ -126,12 +128,13 @@ export default function BookingForm() {
               fullWidth
               variant="outlined"
               className="mt-2">
-              <InputLabel id="timePeriod-label">Time Period</InputLabel>
+              <InputLabel id="timePeriod-label">Time Period*</InputLabel>
               <Select
                 labelId="timePeriod-label"
                 id="timePeriod"
                 value={timePeriod}
-                label="Time Period"
+                label="Time Period*"
+                required
                 onChange={(e) => setTimePeriod(e.target.value as "standard" | "premium" | "special")}>
                 <MenuItem value="standard">Standard (08:00 - 20:00, Mon-Sat)</MenuItem>
                 <MenuItem value="premium">Premium (20:00 - 08:00, plus Sunday/PubHol)</MenuItem>
@@ -150,6 +153,7 @@ export default function BookingForm() {
                 id="flightNumber"
                 value={flightNumber}
                 onChange={setFlightNumber}
+                required={false}
               />
             )}
 

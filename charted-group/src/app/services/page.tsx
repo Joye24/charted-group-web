@@ -71,31 +71,58 @@ export default function About() {
         px-10
         lg:px-60
         quote-wrapper
-      ">
-        {/* <div className="flex flex-col mb-4">
-          <div className="flex items-start gap-2">
-            <FadeUpOnScroll className="duration-2000">
-              <p className={`${ibmPlexSerif.className} leading-relaxed text-xl lg:text-4xl font-thin`}>Make Your Booking</p>
-            </FadeUpOnScroll>
-          </div>
-        </div> */}
-      </div>
-      <FadeUpOnScroll className="duration-1000">
-        <div className="flex flex-col gap-10 px-10 lg:px-60 py-10">
-          <h1 className={`${ibmPlexSerif.className} items-center text-center leading-relaxed text-xl lg:text-4xl font-thin w-full`}>
-            Our pricing is Competitive & Transparent
-          </h1>
-          <div className="flex items-center justify-center w-full">
-            <Image
-              src="/images/fare-calculation.png"
-              alt="fare-calculation"
-              width={605}
-              height={602}
-              className="object-contain"
-            />
-          </div>
+      "></div>
+      <div className={`${ibmPlexSerif.className} flex flex-col gap-10 px-5 md:px-10 lg:px-20 py-10`}>
+        <h1 className="leading-relaxed text-3xl text-center md:text-left md:text-7xl font-normal w-full">Why Charted Group?</h1>
+        <div className="border-1 border-gray-500 border-opacity-50 rounded-4xl md:rounded-r-[130px] px-5 py-15 md:pl-100 md:pr-60 md:-ml-60 md:mr-40">
+          <h2 className="text-2xl md:text-5xl mb-5 md:mb-7 font-light">Who we are</h2>
+          <p className="font-light md:font-thin text-md md:text-xl mb-10">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+            1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+            also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+          <p className="font-light md:font-thin text-md md:text-xl mb-10">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+            1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+            also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+          <h2 className="text-2xl md:text-5xl mb-5 md:mb-7 font-light">What we do</h2>
+          <p className="font-light md:font-thin text-md md:text-xl mb-10">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+            1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+            also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
+          <p className="font-light md:font-thin text-md md:text-xl mb-10">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the
+            1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but
+            also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets
+            containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+          </p>
         </div>
-      </FadeUpOnScroll>
+      </div>
+      <div
+        id="fare-calculation"
+        className="mt-30">
+        <FadeUpOnScroll className="duration-1000">
+          <div className="flex flex-col gap-10 px-10 lg:px-60 py-10">
+            <h1 className={`${ibmPlexSerif.className} items-center text-center leading-relaxed text-xl lg:text-4xl font-thin w-full`}>
+              Our pricing is Competitive & Transparent
+            </h1>
+            <div className="flex items-center justify-center w-full">
+              <Image
+                src="/images/fare-calculation.png"
+                alt="fare-calculation"
+                width={605}
+                height={602}
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </FadeUpOnScroll>
+      </div>
     </div>
   );
 }

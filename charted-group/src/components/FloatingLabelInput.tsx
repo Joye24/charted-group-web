@@ -5,6 +5,7 @@ interface FloatingLabelInputProps {
   label: string;
   id: string;
   value: string;
+  required: boolean;
   onChange: (val: string) => void;
   placeholder?: string; // optional
 }
@@ -12,7 +13,7 @@ interface FloatingLabelInputProps {
 /**
  * MUI OutlinedInput with built-in floating label
  */
-export default function FloatingLabelInput({ label, id, value, onChange, placeholder }: FloatingLabelInputProps) {
+export default function FloatingLabelInput({ label, id, value, required, onChange, placeholder }: FloatingLabelInputProps) {
   return (
     <div className="w-full mb-2">
       <FormControl
@@ -25,6 +26,7 @@ export default function FloatingLabelInput({ label, id, value, onChange, placeho
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          required={required}
         />
       </FormControl>
     </div>
