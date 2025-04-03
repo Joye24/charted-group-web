@@ -55,7 +55,7 @@ export default function PartnersCarousel() {
             <div
               className="
                 flex-none
-                w-[12.5%]
+                w-[1/4] md:w-[1/8]
                 px-2
                 flex
                 justify-center

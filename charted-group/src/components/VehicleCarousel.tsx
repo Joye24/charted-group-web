@@ -46,7 +46,7 @@ export default function VehicleCarousel() {
                   // min-w-[80%] = partial slides on smaller screens
                   // md:w-1/4 = four across on desktop
                   className="
-                flex-none
+                flex-none md:flex-auto
                 w-full
                 md:w-1/3
                 h-[467px]

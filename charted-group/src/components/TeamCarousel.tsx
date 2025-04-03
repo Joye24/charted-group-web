@@ -43,16 +43,16 @@ export default function TeamCarousel() {
         <div className={`font-thin w-full select-none`}>
           {/* Embla container (overflow hidden) */}
           <div
-            className="overflow-hidden relative"
+            className="overflow-hidden relative align-center"
             ref={emblaRef}>
             {/* Embla slide wrapper (flex container) */}
-            <div className="flex gap-6 md:gap-6 px-10 md:px-25 justify-center">
+            <div className="flex gap-6 md:gap-6 px-10 md:px-25">
               {team.map((slide, i) => (
                 <div
                   key={i}
                   className="
                   relative            /* So we can place an overlay */
-                  flex-none
+                  flex-none md:flex-auto
                   w-full
                   md:w-1/5
                   min-h-[400px]
