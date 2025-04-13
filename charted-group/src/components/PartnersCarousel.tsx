@@ -27,18 +27,14 @@ export default function PartnersCarousel() {
   }, [embla]);
 
   const logos = [
+    "/images/partners/sony.png",
+    "/images/partners/warner-bros.svg",
+    "/images/partners/petsafe.svg",
     "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
-    "/images/partners/imperial-hotel.png",
+    "/images/partners/anantara.png",
+    "/images/partners/nig-embassy.png",
+    "/images/partners/ncca.png",
+    "/images/partners/nnpc.png",
   ];
 
   // Duplicate the array so the loop transition looks seamless
@@ -49,7 +45,7 @@ export default function PartnersCarousel() {
       <div
         className="overflow-hidden"
         ref={emblaRef}>
-        <div className="flex">
+        <div className="flex gap-20">
           {partnerLogos.map((src, i) => (
             // Show ~8 logos at once => w-[12.5%] = 1/8
             <div
@@ -65,14 +61,14 @@ export default function PartnersCarousel() {
               <Image
                 src={src}
                 alt={`Partner ${i}`}
-                width={100}
+                width={200}
                 height={0}
                 className="
                   grayscale
                   hover:grayscale-0
                   transition
                   w-auto
-                  h-[45px]
+                  h-[70px]
                 "
               />
             </div>
