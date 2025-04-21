@@ -17,6 +17,15 @@ export default function MenuHeader() {
     document.body.style.overflow = phoneMenuOpen ? "hidden" : "";
   }, [phoneMenuOpen]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = (window as any)._lenis;
+    if (phoneMenuOpen) lenis?.stop();
+    else lenis?.start();
+    return () => lenis?.start();
+  }, [phoneMenuOpen]);
+  
+
   // Calculate dropdown position when menu is open.
   useEffect(() => {
     if (phoneMenuOpen && phoneButtonRef.current) {

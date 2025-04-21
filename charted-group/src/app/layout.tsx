@@ -18,30 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={inter.className}>
+    <html lang="en" className={inter.className}>
       <head>
         <meta charSet="utf-8"></meta>
-        <meta
-          property="og:title"
-          content={`${metadata.title}`}></meta>
+        <meta property="og:title" content={`${metadata.title}`}></meta>
 
-        <meta
-          property="og:site_name"
-          content={`${metadata.title}`}></meta>
-        <meta
-          name="og:description"
-          content={`${metadata.description}`}></meta>
-        <meta
-          property="og:locale"
-          content="en"></meta>
-        <meta
-          name="robots"
-          content="index, follow, nocache"></meta>
-        <meta
-          name="googlebot"
-          content="index, follow, nocache"></meta>
+        <meta property="og:site_name" content={`${metadata.title}`}></meta>
+        <meta name="og:description" content={`${metadata.description}`}></meta>
+        <meta property="og:locale" content="en"></meta>
+        <meta name="robots" content="index, follow, nocache"></meta>
+        <meta name="googlebot" content="index, follow, nocache"></meta>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1"></meta>

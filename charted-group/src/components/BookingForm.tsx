@@ -1,41 +1,225 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import FloatingLabelInput from "./FloatingLabelInput";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import Link from "next/link";
+import { useMapsLibrary } from "@vis.gl/react-google-maps";
 
-export default function BookingForm() {
+type LatLngLiteral = google.maps.LatLngLiteral;
+
+export default function BookingFormCopy() {
+  const originInputRef = useRef<HTMLInputElement>(null);
+  const destInputRef = useRef<HTMLInputElement>(null);
+
+  // ————— Autocomplete refs & coords —————
+  const [originCoords, setOriginCoords] = useState<LatLngLiteral | null>(null);
+  const [destCoords, setDestCoords] = useState<LatLngLiteral | null>(null);
+
+  // ————— State Variables —————
+  const minBookingDate = dayjs().add(1, "day");
   const [legType, setLegType] = useState<"oneWay" | "roundTrip">("oneWay");
-
-  // Step 1: Origin, Destination
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
-
-  // Checkbox for flight number
   const [flightNumberEnabled, setFlightNumberEnabled] = useState(false);
   const [flightNumber, setFlightNumber] = useState("");
-
-  // Step 2: Date
-  const minBookingDate = dayjs().add(1, "day");
-  const [selectedDate, setSelectedDate] = useState(dayjs(minBookingDate));
-
-  // Step 3: Time Period
-  const [timePeriod, setTimePeriod] = useState<"standard" | "premium" | "special">("standard");
-
-  // // Step 4: Passengers
-  // const [passOver12, setPassOver12] = useState(1);
-  // const [passUnder12, setPassUnder12] = useState(0);
-
-  // Step 5: Vehicle
-  const [vehicleOption, setVehicleOption] = useState<"V-Class" | "S-Class" | "E-Class">("V-Class");
-
-  // Booking Type
   const [bookingType] = useState<"prebook" | "hail">("prebook");
+  const [distanceKm, setDistanceKm] = useState<number | null>(null);
+  const [selectedDate, setSelectedDate] = useState(dayjs(minBookingDate));
+  const [vehicleOption, setVehicleOption] = useState<
+    "V-Class" | "S-Class" | "E-Class"
+  >("V-Class");
+
+  const [timePeriod, setTimePeriod] = useState<
+    "standard" | "premium" | "special"
+  >("standard");
+
+  // ————— Price Range Variables —————
+  const [fareError, setFareError] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [priceRange, setPriceRange] = useState<{
+    min: number;
+    max: number;
+  } | null>(null);
+
+  const euro = useMemo(
+    () =>
+      new Intl.NumberFormat("en-IE", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0,
+      }),
+    []
+  );
+
+  // pull in the `places` bundle
+  const places = useMapsLibrary("places");
+  //console.log("Maps:", places);
+
+  // once maps+places loaded, wire up both inputs:
+  useEffect(() => {
+    if (!places) return;
+
+    // hook up origin autocomplete
+    if (originInputRef.current) {
+      const ac = new places.Autocomplete(originInputRef.current, {
+        fields: ["formatted_address", "geometry.location"],
+      });
+      ac.addListener("place_changed", () => {
+        const p = ac.getPlace();
+        if (p.formatted_address && p.geometry?.location) {
+          setOrigin(p.formatted_address);
+          setOriginCoords({
+            lat: p.geometry.location.lat(),
+            lng: p.geometry.location.lng(),
+          });
+        }
+      });
+    }
+
+    // hook up destination autocomplete
+    if (destInputRef.current) {
+      const ac2 = new places.Autocomplete(destInputRef.current, {
+        fields: ["formatted_address", "geometry.location"],
+      });
+      ac2.addListener("place_changed", () => {
+        const p = ac2.getPlace();
+        if (p.formatted_address && p.geometry?.location) {
+          setDestination(p.formatted_address);
+          setDestCoords({
+            lat: p.geometry.location.lat(),
+            lng: p.geometry.location.lng(),
+          });
+        }
+      });
+    }
+  }, [places]);
+
+  // when both coords ready, compute driving distance
+  useEffect(() => {
+    if (!originCoords || !destCoords) return;
+    new google.maps.DirectionsService().route(
+      {
+        origin: originCoords,
+        destination: destCoords,
+        travelMode: google.maps.TravelMode.DRIVING,
+      },
+      (res, status) => {
+        if (status === "OK" && res?.routes.length) {
+          const m = res.routes[0].legs[0].distance?.value;
+          if (m != null) setDistanceKm(m / 1000);
+        }
+      }
+    );
+  }, [originCoords, destCoords]);
+
+  // helper that returns driving‑distance in km, or rejects
+  const drivingDistanceKm = (
+    origin: google.maps.LatLngLiteral,
+    destination: google.maps.LatLngLiteral
+  ): Promise<number> => {
+    return new Promise((resolve, reject) => {
+      new google.maps.DirectionsService().route(
+        { origin, destination, travelMode: google.maps.TravelMode.DRIVING },
+        (result, status) => {
+          //console.log("drivingDistanceKm", { result, status });
+          if (status === "OK" && result?.routes.length) {
+            const meters = result.routes[0].legs[0].distance?.value ?? 0;
+            resolve(meters / 1000);
+          } else {
+            reject(new Error("NO_ROUTE"));
+          }
+        }
+      );
+    });
+  };
+
+  const calculateOneWayPrice = useCallback(
+    (isDublin: boolean, isBelfast: boolean, tripKm: number) => {
+      const baseMap = {
+        "E-Class": 90,
+        "S-Class": 100,
+        "V-Class": 100,
+      } as const;
+      let price = baseMap[vehicleOption];
+
+      if (isDublin || isBelfast) {
+        price += 30;
+      } else {
+        price += tripKm * 3;
+      }
+
+      setPriceRange({ min: price - 25, max: price + 25 });
+    },
+    [vehicleOption]
+  );
+
+  useEffect(() => {
+    // airport centers
+    const DUBLIN = { lat: 53.438013, lng: -6.254802 };
+    const BELFAST = { lat: 54.657222, lng: -6.215833 };
+
+    // clear old priceRange immediately
+    setPriceRange(null);
+    setFareError(false);
+
+    if (!originCoords || !destCoords || distanceKm == null) {
+      // nothing to do yet
+      return;
+    }
+
+    setIsCalculating(true);
+
+    (async () => {
+      try {
+        // driving distance between A→B
+        const tripKm = distanceKm;
+
+        // both ends → Dublin
+        const [oDub, dDub] = await Promise.all([
+          drivingDistanceKm(originCoords, DUBLIN),
+          drivingDistanceKm(destCoords, DUBLIN),
+        ]);
+        const inDublin = oDub <= 20 && dDub <= 20;
+
+        let inBelfast = false;
+        if (!inDublin) {
+          // only check Belfast if not already in Dublin
+          const [oBel, dBel] = await Promise.all([
+            drivingDistanceKm(originCoords, BELFAST),
+            drivingDistanceKm(destCoords, BELFAST),
+          ]);
+          inBelfast = oBel <= 20 && dBel <= 20;
+        }
+
+        if (legType === "oneWay") {
+          calculateOneWayPrice(inDublin, inBelfast, tripKm);
+        }
+      } catch (_e) {
+        console.error(_e);
+        // any route fail → show error
+        setFareError(true);
+      } finally {
+        setIsCalculating(false);
+      }
+    })().catch(console.error);
+  }, [
+    legType,
+    originCoords,
+    destCoords,
+    vehicleOption,
+    distanceKm,
+    calculateOneWayPrice,
+  ]);
 
   function handleNext() {
     // For now, just console log
@@ -48,34 +232,69 @@ export default function BookingForm() {
       timePeriod,
       bookingType,
       vehicleOption,
+      distanceKm,
+      priceRange,
     });
   }
 
   return (
-    <div className="flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/90 lg:bg-white/85 h-full">
+    <div className="relative flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/90 lg:bg-white/85 h-full">
+      {isCalculating && (
+        <div className="absolute inset-0 z-10 bg-white/70 flex items-center justify-center">
+          {/* simple SVG spinner */}
+          <svg
+            className="animate-spin h-10 w-10 text-[#191F32]"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+        </div>
+      )}
       {/* Leg Type Switch (One way, Round trip) */}
-      <div className="flex gap-10 mb-6">
+      <div className="flex gap-10 mb-10">
         <span
           className={`
             text-[#191F32]
             border-b-2 
             cursor-pointer
-            ${legType === "oneWay" ? "border-slate-950 font-bold" : "border-transparent font-light"}
+            ${
+              legType === "oneWay"
+                ? "border-slate-950 font-bold"
+                : "border-transparent font-light"
+            }
           `}
           onClick={() => setLegType("oneWay")}>
           One Way
         </span>
 
-        <span
+        {/* <span
           className={`
             text-[#191F32]
             cursor-pointer
             border-b-2
-            ${legType === "roundTrip" ? "border-slate-950 font-bold" : "border-transparent font-light"}
+            ${
+              legType === "roundTrip"
+                ? "border-slate-950 font-bold"
+                : "border-transparent font-light"
+            }
           `}
-          onClick={() => setLegType("roundTrip")}>
+          onClick={() => setLegType("roundTrip")}
+        >
           Round Trip
-        </span>
+        </span> */}
       </div>
 
       {/* Booking Form Container */}
@@ -85,6 +304,7 @@ export default function BookingForm() {
           {/* Origin */}
           <div className="w-full">
             <FloatingLabelInput
+              ref={originInputRef}
               label="Origin*"
               id="origin"
               placeholder="Enter your origin"
@@ -95,8 +315,10 @@ export default function BookingForm() {
           </div>
 
           {/* Destination */}
+
           <div className="w-full">
             <FloatingLabelInput
+              ref={destInputRef}
               label="Destination*"
               placeholder="Enter your destination"
               id="destination"
@@ -124,10 +346,7 @@ export default function BookingForm() {
 
           {/* Time Period */}
           <div className="flex flex-col w-full">
-            <FormControl
-              fullWidth
-              variant="outlined"
-              className="mt-2">
+            <FormControl fullWidth variant="outlined" className="mt-2">
               <InputLabel id="timePeriod-label">Time Period*</InputLabel>
               <Select
                 labelId="timePeriod-label"
@@ -135,16 +354,46 @@ export default function BookingForm() {
                 value={timePeriod}
                 label="Time Period*"
                 required
-                onChange={(e) => setTimePeriod(e.target.value as "standard" | "premium" | "special")}>
-                <MenuItem value="standard">Standard (08:00 - 20:00, Mon-Sat)</MenuItem>
-                <MenuItem value="premium">Premium (20:00 - 08:00, plus Sunday/PubHol)</MenuItem>
-                <MenuItem value="special">Special (Sat &amp; Sun, 00:00 - 04:00)</MenuItem>
+                onChange={(e) =>
+                  setTimePeriod(
+                    e.target.value as "standard" | "premium" | "special"
+                  )
+                }>
+                <MenuItem value="standard">
+                  Standard (08:00 - 20:00, Mon-Sat)
+                </MenuItem>
+                <MenuItem value="premium">
+                  Premium (20:00 - 08:00, plus Sunday/PubHol)
+                </MenuItem>
+                <MenuItem value="special">
+                  Special (Sat &amp; Sun, 00:00 - 04:00)
+                </MenuItem>
               </Select>
             </FormControl>
           </div>
         </div>
         <div className="flex flex-col md:flex-row gap-5">
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full mb-5">
+            <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
+              <InputLabel id="vehicle-label">Vehicle*</InputLabel>
+              <Select
+                labelId="timvehicleePeriod-label"
+                id="vehicle*"
+                value={vehicleOption}
+                label="Vehicle"
+                required
+                onChange={(e) =>
+                  setVehicleOption(
+                    e.target.value as "V-Class" | "S-Class" | "E-Class"
+                  )
+                }>
+                <MenuItem value="V-Class">V-Class</MenuItem>
+                <MenuItem value="S-Class">S-Class</MenuItem>
+                <MenuItem value="E-Class">E-Class</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="flex flex-col w-full mb-5">
             {/* If checked, show the flight number text field */}
             {flightNumberEnabled && (
               <FloatingLabelInput
@@ -173,29 +422,13 @@ export default function BookingForm() {
               </label>
             </div>
           </div>
-          <div className="w-full flex flex-col">
-            <div className="flex flex-col w-full mb-5">
-              <FormControl
-                fullWidth
-                variant="outlined"
-                className="mt-2 mb-5">
-                <InputLabel id="vehicle-label">Vehicle*</InputLabel>
-                <Select
-                  labelId="timvehicleePeriod-label"
-                  id="vehicle*"
-                  value={vehicleOption}
-                  label="Vehicle"
-                  required
-                  onChange={(e) => setVehicleOption(e.target.value as "V-Class" | "S-Class" | "E-Class")}>
-                  <MenuItem value="V-Class">V-Class</MenuItem>
-                  <MenuItem value="S-Class">S-Class</MenuItem>
-                  <MenuItem value="E-Class">E-Class</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
+        </div>
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex flex-col w-full mb-5">
             <button
               onClick={handleNext}
-              className="
+              disabled={!priceRange}
+              className={`
                 flex
                 max-w-full md:max-w-[150px]
                 items-center
@@ -209,10 +442,15 @@ export default function BookingForm() {
                 h-[60px]
                 px-[30px]
                 py-[18px]
-                hover:opacity-80
+                ${priceRange ? "hover:opacity-80" : ""}
                 text-center
                 justify-center
-              ">
+                ${
+                  !priceRange
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:opacity-80"
+                }
+                `}>
               <svg
                 width="25"
                 height="18"
@@ -228,15 +466,26 @@ export default function BookingForm() {
               </svg>
               Next
             </button>
-            <div className="mt-4 flex w-full text-center md:text-left justify-center md:justify-start">
-              <Link
-                href="/services#fare-calculation"
-                className="
-                text-xs
-                text-blue-950
-              ">
-                See Fare Calculation
-              </Link>
+          </div>
+          <div className="flex flex-col w-full mb-5">
+            <div className="flex items-center gap-2 mt-2 py-4 hidden">
+              {distanceKm != null && (
+                <div className="text-sm text-gray-600 font-bold">
+                  Distance: {distanceKm.toFixed(1)} km
+                </div>
+              )}
+            </div>
+            <div className="mt-auto flex items-center gap-2 mt-2 py-4 justify-start">
+              {fareError ? (
+                <span className="text-lg text-red-600 font-bold">
+                  Unable to Calculate Fare
+                </span>
+              ) : priceRange ? (
+                <div className="text-lg text-[#191F32] font-semibold mt-2">
+                  Estimated fare: {euro.format(priceRange.min)} – 
+                  {euro.format(priceRange.max)}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>

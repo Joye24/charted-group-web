@@ -26,10 +26,15 @@ export default function MobileHeader() {
         transition-transform
         duration-[400ms]
         transform
-      ">
+      "
+      >
         {/* Left: Burger Icon Button */}
         <button
-          onClick={() => (phoneMenuOpen ? setPhoneMenuOpen(!phoneMenuOpen) : setMenuOpen(!menuOpen))}
+          onClick={() =>
+            phoneMenuOpen
+              ? setPhoneMenuOpen(!phoneMenuOpen)
+              : setMenuOpen(!menuOpen)
+          }
           type="button"
           className="
     text-[rgba(0,0,0,0.1)]
@@ -44,7 +49,8 @@ export default function MobileHeader() {
     shadow-[inset_0_0.5px_0.5px_rgba(0,0,0,0.1)]
     transition
     duration-300
-  ">
+  "
+        >
           {menuOpen || phoneMenuOpen ? (
             // 'Close' icon if menu is open
             <svg
@@ -53,7 +59,8 @@ export default function MobileHeader() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="#1d2b4d"
-              className="size-6">
+              className="size-6"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -72,7 +79,8 @@ export default function MobileHeader() {
               strokeWidth="1"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="tabler-icon tabler-icon-menu-2">
+              className="tabler-icon tabler-icon-menu-2"
+            >
               <path d="M4 6l16 0" />
               <path d="M4 12l16 0" />
               <path d="M4 18l16 0" />
@@ -85,8 +93,8 @@ export default function MobileHeader() {
           <Image
             alt="Charted Group Logo"
             src="/images/ce-logo-dark.png"
-            width="40"
-            height="0"
+            width={40}
+            height={40}
             style={{ color: "transparent" }}
           />
         </Link>
@@ -108,7 +116,8 @@ export default function MobileHeader() {
           shadow-[inset_0_0.5px_0.5px_rgba(0,0,0,0.1)]
           transition
           duration-300
-        ">
+        "
+        >
           <Image
             alt="Phone"
             src="/icons/phone.svg"

@@ -17,6 +17,10 @@ export default function LenisWrapper({
       infinite: false, 
     });
 
+    // make it globally accessible
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any)._lenis = lenis;
+
     // Listen to the Lenis scroll event
     lenis.on("scroll", handleScroll);
 

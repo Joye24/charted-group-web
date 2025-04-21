@@ -1,5 +1,6 @@
 "use client";
 
+import { APIProvider } from "@vis.gl/react-google-maps";
 import { useEffect, useRef } from "react";
 import Ukiyo from "ukiyojs";
 
@@ -9,11 +10,11 @@ interface ParallaxWrapperProps {
 
 export default function ParallaxWrapper({ children }: ParallaxWrapperProps) {
   const parallaxRef = useRef<Ukiyo | null>(null);
+  const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY!;
 
   useEffect(() => {
     // Query all elements with the "ukiyo" class.
     const images = document.querySelectorAll(".ukiyo");
-    console.log(images);
     if (images.length === 0) return;
 
     // Create a new Ukiyo instance over those images
@@ -31,5 +32,9 @@ export default function ParallaxWrapper({ children }: ParallaxWrapperProps) {
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <APIProvider apiKey={GOOGLE_API_KEY} libraries={["places"]}>
+      {children}
+    </APIProvider>
+  );
 }
