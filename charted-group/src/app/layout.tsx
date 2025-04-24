@@ -7,6 +7,11 @@ import { inter } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/images/ce-logo-white-bg.png",
+    shortcut: "/images/ce-logo-white-bg.png",
+    apple: "/images/ce-logo-white-bg.png",
+  },
   title: "Charted Group | Transportation - Think Charted",
   description:
     "Experience premium ground transportation in Ireland with our on-demand fleet, fare calculator, and hospitality services. Charted Group ensures seamless, reliable, and luxurious travel for business, events, and tours.",
