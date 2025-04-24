@@ -1,9 +1,7 @@
 // app/page.tsx
 "use client";
 
-import { FadeUpOnScroll } from "@/components/FadeUpOnScroll";
 import { ibmPlexSerif } from "../fonts";
-import Image from "next/image";
 
 export default function About() {
   return (
