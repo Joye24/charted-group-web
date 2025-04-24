@@ -17,26 +17,28 @@ export default function VehicleCarousel() {
   const slides = [
     {
       title: "V-Class",
-      bgUrl: "linear-gradient(rgba(24, 31, 50, 0), rgba(24, 31, 50, 0.63)), url('/images/v-class.jpeg')",
+      bgUrl:
+        "linear-gradient(rgba(24, 31, 50, 0), rgba(24, 31, 50, 0.63)), url('/images/v-class.jpeg')",
     },
     {
       title: "S-Class",
-      bgUrl: "linear-gradient(rgba(24, 31, 50, 0), rgba(24, 31, 50, 0.63)), url('/images/s-class.jpeg')",
+      bgUrl:
+        "linear-gradient(rgba(24, 31, 50, 0), rgba(24, 31, 50, 0.63)), url('/images/s-class.jpeg')",
     },
     {
       title: "E-Class",
-      bgUrl: "linear-gradient(rgba(24, 31, 50, 0), rgba(24, 31, 50, 0.63)), url('/images/e-class.jpeg')",
+      bgUrl:
+        "linear-gradient(rgba(24, 31, 50, 0), rgba(24, 31, 50, 0.63)), url('/images/e-class.jpeg')",
     },
   ];
 
   return (
     <div className="min-h-[600px]">
       <FadeUpOnScroll className="block h-auto duration-500">
-        <div className={`${ibmPlexSerif.className} font-thin w-full select-none`}>
+        <div
+          className={`${ibmPlexSerif.className} font-thin w-full select-none`}>
           {/* Embla container (overflow hidden) */}
-          <div
-            className="overflow-hidden relative"
-            ref={emblaRef}>
+          <div className="overflow-hidden relative" ref={emblaRef}>
             {/* Embla slide wrapper (flex container) */}
             <div className="flex gap-6 md:gap-6 px-10 md:px-25">
               {slides.map((slide, i) => (
@@ -68,7 +70,9 @@ export default function VehicleCarousel() {
                     backgroundImage: slide.bgUrl,
                   }}>
                   <div className="ml-10 mb-10 z-10 text-white">
-                    <div className="text-5xl mb-5 text-center">{slide.title}</div>
+                    <div className="text-5xl mb-5 text-center">
+                      {slide.title}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -76,13 +80,18 @@ export default function VehicleCarousel() {
           </div>
         </div>
       </FadeUpOnScroll>
-      <FadeUpOnScroll className="block h-auto duration-500 my-60 py-30 px-10 md:px-25 bg-gradient-to-r from-gray-200 to-gray-500 text-slate-950 rounded-full">
+      <FadeUpOnScroll className="block h-auto duration-500 my-60 py-30 px-10 md:px-25 bg-gradient-to-r from-gray-200 to-gray-500 text-slate-950 lg:rounded-full">
         <div className="flex flex-col md:flex-row gap-6 w-full">
-          <div className={`${ibmPlexSerif.className} flex flex-col w-full md:w-1/2 align-middle justify-center`}>
-            <h2 className="text-5xl lg:text-8xl font-light mb-8 md:mb-15">Capacity</h2>
+          <div
+            className={`${ibmPlexSerif.className} flex flex-col w-full md:w-1/2 align-middle justify-center`}>
+            <h2 className="text-5xl lg:text-8xl font-light mb-8 md:mb-15">
+              Capacity
+            </h2>
             <p className="text-2xl lg:text-3xl font-light mb-5">
-              Mercedes MPV vehicles seat up to six passengers, when all seats are in use. Alternatively the seats can also be turned into a conference seating
-              position at the clients request. The boot offers good luggage space.
+              Mercedes MPV vehicles seat up to six passengers, when all seats
+              are in use. Alternatively the seats can also be turned into a
+              conference seating position at the clients request. The boot
+              offers good luggage space.
             </p>
           </div>
           <div className="flex flex-col w-full md:w-1/2">

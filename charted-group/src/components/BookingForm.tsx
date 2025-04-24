@@ -26,6 +26,7 @@ export default function BookingFormCopy() {
   const [destCoords, setDestCoords] = useState<LatLngLiteral | null>(null);
 
   // ————— State Variables —————
+  const [step, setStep] = useState<1 | 2>(1);
   const minBookingDate = dayjs().add(1, "day");
   const [legType, setLegType] = useState<"oneWay" | "roundTrip">("oneWay");
   const [origin, setOrigin] = useState("");
@@ -42,6 +43,12 @@ export default function BookingFormCopy() {
   const [timePeriod, setTimePeriod] = useState<
     "standard" | "premium" | "special"
   >("standard");
+
+  // -------- Personal Details -------
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   // ————— Price Range Variables —————
   const [fareError, setFareError] = useState(false);
@@ -61,13 +68,27 @@ export default function BookingFormCopy() {
     []
   );
 
+  const isEmailValid = useMemo(
+    () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+    [email]
+  );
+
+  const canSubmit =
+    firstName.trim() !== "" &&
+    lastName.trim() !== "" &&
+    email.trim() !== "" &&
+    phone.trim() !== "" &&
+    isEmailValid;
+
   // pull in the `places` bundle
   const places = useMapsLibrary("places");
   //console.log("Maps:", places);
 
   // once maps+places loaded, wire up both inputs:
   useEffect(() => {
-    if (!places) return;
+    if (!places || step != 1) return;
+
+    console.log("Places loaded", places);
 
     // hook up origin autocomplete
     if (originInputRef.current) {
@@ -102,7 +123,7 @@ export default function BookingFormCopy() {
         }
       });
     }
-  }, [places]);
+  }, [places, step]);
 
   // when both coords ready, compute driving distance
   useEffect(() => {
@@ -164,6 +185,8 @@ export default function BookingFormCopy() {
   );
 
   useEffect(() => {
+    if (step !== 1) return;
+
     // airport centers
     const DUBLIN = { lat: 53.438013, lng: -6.254802 };
     const BELFAST = { lat: 54.657222, lng: -6.215833 };
@@ -213,6 +236,7 @@ export default function BookingFormCopy() {
       }
     })().catch(console.error);
   }, [
+    step,
     legType,
     originCoords,
     destCoords,
@@ -234,6 +258,22 @@ export default function BookingFormCopy() {
       vehicleOption,
       distanceKm,
       priceRange,
+    });
+
+    setStep(2);
+  }
+
+  function handleBack() {
+    setStep(1);
+  }
+
+  function handleSubmit() {
+    // For now, just console log
+    console.log({
+      firstName,
+      lastName,
+      email,
+      phone,
     });
   }
 
@@ -263,6 +303,7 @@ export default function BookingFormCopy() {
           </svg>
         </div>
       )}
+
       {/* Leg Type Switch (One way, Round trip) */}
       <div className="flex gap-10 mb-10">
         <span
@@ -297,138 +338,139 @@ export default function BookingFormCopy() {
         </span> */}
       </div>
 
-      {/* Booking Form Container */}
-      <div className="flex flex-col gap-5 w-full text-left">
-        {/* Row 1: Origin (left), Date (right) */}
-        <div className="flex flex-col lg:flex-row lg:gap-5">
-          {/* Origin */}
-          <div className="w-full">
-            <FloatingLabelInput
-              ref={originInputRef}
-              label="Origin*"
-              id="origin"
-              placeholder="Enter your origin"
-              value={origin}
-              onChange={setOrigin}
-              required={true}
-            />
-          </div>
-
-          {/* Destination */}
-
-          <div className="w-full">
-            <FloatingLabelInput
-              ref={destInputRef}
-              label="Destination*"
-              placeholder="Enter your destination"
-              id="destination"
-              value={destination}
-              onChange={setDestination}
-              required={true}
-            />
-          </div>
-        </div>
-
-        {/* Row 2: Date (left), Time Period (right) */}
-        <div className="flex flex-col md:flex-row gap-5">
-          {/* Destination */}
-          <div className="w-full flex flex-col">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Departure Date*"
-                value={selectedDate}
-                onChange={(val) => val && setSelectedDate(val)}
-                format="DD/MM/YYYY"
-                minDate={minBookingDate}
-              />
-            </LocalizationProvider>
-          </div>
-
-          {/* Time Period */}
-          <div className="flex flex-col w-full">
-            <FormControl fullWidth variant="outlined" className="mt-2">
-              <InputLabel id="timePeriod-label">Time Period*</InputLabel>
-              <Select
-                labelId="timePeriod-label"
-                id="timePeriod"
-                value={timePeriod}
-                label="Time Period*"
-                required
-                onChange={(e) =>
-                  setTimePeriod(
-                    e.target.value as "standard" | "premium" | "special"
-                  )
-                }>
-                <MenuItem value="standard">
-                  Standard (08:00 - 20:00, Mon-Sat)
-                </MenuItem>
-                <MenuItem value="premium">
-                  Premium (20:00 - 08:00, plus Sunday/PubHol)
-                </MenuItem>
-                <MenuItem value="special">
-                  Special (Sat &amp; Sun, 00:00 - 04:00)
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-5">
-          <div className="flex flex-col w-full mb-5">
-            <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
-              <InputLabel id="vehicle-label">Vehicle*</InputLabel>
-              <Select
-                labelId="timvehicleePeriod-label"
-                id="vehicle*"
-                value={vehicleOption}
-                label="Vehicle"
-                required
-                onChange={(e) =>
-                  setVehicleOption(
-                    e.target.value as "V-Class" | "S-Class" | "E-Class"
-                  )
-                }>
-                <MenuItem value="V-Class">V-Class</MenuItem>
-                <MenuItem value="S-Class">S-Class</MenuItem>
-                <MenuItem value="E-Class">E-Class</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div className="flex flex-col w-full mb-5">
-            {/* If checked, show the flight number text field */}
-            {flightNumberEnabled && (
+      {step === 1 ? (
+        /* ─── STEP 1: travel details ─── */
+        <div className="flex flex-col gap-5 w-full text-left">
+          {/* Row 1: Origin (left), Date (right) */}
+          <div className="flex flex-col lg:flex-row lg:gap-5">
+            {/* Origin */}
+            <div className="w-full">
               <FloatingLabelInput
-                label="Flight Number"
-                placeholder="e.g. EI123"
-                id="flightNumber"
-                value={flightNumber}
-                onChange={setFlightNumber}
-                required={false}
+                ref={originInputRef}
+                label="Origin*"
+                id="origin"
+                placeholder="Enter your origin"
+                value={origin}
+                onChange={setOrigin}
+                required={true}
               />
-            )}
+            </div>
 
-            {/* Checkbox for flight number */}
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="flightCheckbox"
-                checked={flightNumberEnabled}
-                onChange={(e) => setFlightNumberEnabled(e.target.checked)}
+            {/* Destination */}
+
+            <div className="w-full">
+              <FloatingLabelInput
+                ref={destInputRef}
+                label="Destination*"
+                placeholder="Enter your destination"
+                id="destination"
+                value={destination}
+                onChange={setDestination}
+                required={true}
               />
-
-              <label
-                htmlFor="flightCheckbox"
-                className="text-xs text-[#191F32] cursor-pointer">
-                Add Flight Number
-              </label>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col md:flex-row gap-5">
-          <div className="flex flex-col w-full mb-5">
-            <button
-              onClick={handleNext}
-              disabled={!priceRange}
-              className={`
+
+          {/* Row 2: Date (left), Time Period (right) */}
+          <div className="flex flex-col md:flex-row gap-5">
+            {/* Destination */}
+            <div className="w-full flex flex-col">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Departure Date*"
+                  value={selectedDate}
+                  onChange={(val) => val && setSelectedDate(val)}
+                  format="DD/MM/YYYY"
+                  minDate={minBookingDate}
+                />
+              </LocalizationProvider>
+            </div>
+
+            {/* Time Period */}
+            <div className="flex flex-col w-full">
+              <FormControl fullWidth variant="outlined" className="mt-2">
+                <InputLabel id="timePeriod-label">Time Period*</InputLabel>
+                <Select
+                  labelId="timePeriod-label"
+                  id="timePeriod"
+                  value={timePeriod}
+                  label="Time Period*"
+                  required
+                  onChange={(e) =>
+                    setTimePeriod(
+                      e.target.value as "standard" | "premium" | "special"
+                    )
+                  }>
+                  <MenuItem value="standard">
+                    Standard (08:00 - 20:00, Mon-Sat)
+                  </MenuItem>
+                  <MenuItem value="premium">
+                    Premium (20:00 - 08:00, plus Sunday/PubHol)
+                  </MenuItem>
+                  <MenuItem value="special">
+                    Special (Sat &amp; Sun, 00:00 - 04:00)
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-5">
+            <div className="flex flex-col w-full mb-5">
+              <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
+                <InputLabel id="vehicle-label">Vehicle*</InputLabel>
+                <Select
+                  labelId="timvehicleePeriod-label"
+                  id="vehicle*"
+                  value={vehicleOption}
+                  label="Vehicle"
+                  required
+                  onChange={(e) =>
+                    setVehicleOption(
+                      e.target.value as "V-Class" | "S-Class" | "E-Class"
+                    )
+                  }>
+                  <MenuItem value="V-Class">V-Class</MenuItem>
+                  <MenuItem value="S-Class">S-Class</MenuItem>
+                  <MenuItem value="E-Class">E-Class</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div className="flex flex-col w-full mb-5">
+              {/* If checked, show the flight number text field */}
+              {flightNumberEnabled && (
+                <FloatingLabelInput
+                  label="Flight Number"
+                  placeholder="e.g. EI123"
+                  id="flightNumber"
+                  value={flightNumber}
+                  onChange={setFlightNumber}
+                  required={false}
+                />
+              )}
+
+              {/* Checkbox for flight number */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="flightCheckbox"
+                  checked={flightNumberEnabled}
+                  onChange={(e) => setFlightNumberEnabled(e.target.checked)}
+                />
+
+                <label
+                  htmlFor="flightCheckbox"
+                  className="text-xs text-[#191F32] cursor-pointer">
+                  Add Flight Number
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row gap-5">
+            <div className="flex flex-col w-full mb-5">
+              <button
+                onClick={handleNext}
+                disabled={!priceRange}
+                className={`
                 flex
                 max-w-full md:max-w-[150px]
                 items-center
@@ -451,45 +493,142 @@ export default function BookingFormCopy() {
                     : "hover:opacity-80"
                 }
                 `}>
-              <svg
-                width="25"
-                height="18"
-                fill="none"
-                className="mr-2"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
-                  fill="#fff"
-                />
-              </svg>
-              Next
-            </button>
-          </div>
-          <div className="flex flex-col w-full mb-5">
-            <div className="flex items-center gap-2 mt-2 py-4 hidden">
-              {distanceKm != null && (
-                <div className="text-sm text-gray-600 font-bold">
-                  Distance: {distanceKm.toFixed(1)} km
-                </div>
-              )}
+                <svg
+                  width="25"
+                  height="18"
+                  fill="none"
+                  className="mr-2"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
+                    fill="#fff"
+                  />
+                </svg>
+                Next
+              </button>
             </div>
-            <div className="mt-auto flex items-center gap-2 mt-2 py-4 justify-start">
-              {fareError ? (
-                <span className="text-lg text-red-600 font-bold">
-                  Unable to Calculate Fare
-                </span>
-              ) : priceRange ? (
-                <div className="text-lg text-[#191F32] font-semibold mt-2">
-                  Estimated fare: {euro.format(priceRange.min)} – 
-                  {euro.format(priceRange.max)}
-                </div>
-              ) : null}
+            <div className="flex flex-col w-full mb-5">
+              <div className="flex items-center gap-2 mt-2 py-4 hidden">
+                {distanceKm != null && (
+                  <div className="text-sm text-gray-600 font-bold">
+                    Distance: {distanceKm.toFixed(1)} km
+                  </div>
+                )}
+              </div>
+              <div className="mt-auto flex items-center gap-2 mt-2 py-4 justify-start">
+                {fareError ? (
+                  <span className="text-lg text-red-600 font-bold">
+                    Unable to Calculate Fare
+                  </span>
+                ) : priceRange ? (
+                  <div className="text-lg text-[#191F32] font-semibold mt-2">
+                    Estimated fare: {euro.format(priceRange.min)} – 
+                    {euro.format(priceRange.max)}
+                  </div>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        /* ─── STEP 2: personal details ─── */
+        <div
+          className="flex flex-col gap-5 w-full text-left transition-transform duration-300 transform"
+          // for slide/fade you can toggle translate-x and opacity here
+        >
+          <div className="flex flex-col lg:flex-row lg:gap-5">
+            <div className="w-full">
+              <FloatingLabelInput
+                ref={null}
+                label="First Name*"
+                id="firstName"
+                value={firstName}
+                onChange={setFirstName}
+                required
+                autoComplete="off"
+              />
+            </div>
+            <div className="w-full">
+              <FloatingLabelInput
+                label="Last Name*"
+                id="lastName"
+                value={lastName}
+                onChange={setLastName}
+                required
+              />
+            </div>
+          </div>
+          <div className="flex flex-col lg:flex-row lg:gap-5">
+            <div className="w-full">
+              <FloatingLabelInput
+                label="Email*"
+                id="email"
+                value={email}
+                onChange={setEmail}
+                required
+              />
+            </div>
+            <div className="w-full">
+              <FloatingLabelInput
+                label="Phone*"
+                id="phone"
+                value={phone}
+                onChange={setPhone}
+                required
+              />
+            </div>
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={handleBack}
+              className="flex
+                max-w-full md:max-w-[150px]
+                items-center bg-slate-600 text-white
+                rounded-full
+                uppercase
+                tracking-[2px]
+                font-light
+                text-[15px]
+                h-[60px]
+                px-[30px]
+                py-[18px]
+                hover:opacity-80
+                text-center
+                justify-center min-w-[150px]">
+              Back
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={!canSubmit}
+              className={`
+                flex
+                max-w-full md:max-w-[150px]
+                items-center
+                bg-[#191F32]
+                text-white
+                rounded-full
+                uppercase
+                tracking-[2px]
+                font-light
+                text-[15px]
+                h-[60px]
+                px-[30px]
+                py-[18px]
+                ${
+                  canSubmit
+                    ? "hover:opacity-80"
+                    : "opacity-50 cursor-not-allowed"
+                }
+                text-center
+                justify-center  min-w-[150px]
+                `}>
+              Submit
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

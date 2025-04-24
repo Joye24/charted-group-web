@@ -7,7 +7,7 @@ export default function MainPartnersFooter() {
     <div className="flex items-center gap-[35px] relative">
       <div className="w-full md:w-1/3 flex justify-center lg:justify-start">
         <Image
-          src="https://simplyjet-sos-new.sos-ch-gva-2.exoscale-cdn.com/website/media/1715171667931~EBAA.svg"
+          src="/images/partners/black-diamond-hotel.png"
           alt="ebaa"
           width={100}
           height={100}
