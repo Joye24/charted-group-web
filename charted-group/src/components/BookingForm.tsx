@@ -186,22 +186,18 @@ export default function BookingFormCopy() {
 
   const calculateOneWayPrice = useCallback(
     (isDublin: boolean, isBelfast: boolean, tripKm: number) => {
-      const baseMap = {
-        "E-Class": 90,
-        "S-Class": 100,
-        "V-Class": 100,
-      } as const;
-      let price = baseMap[vehicleOption];
+      const { base, perKm, rangeMargin, airportSurcharge } = country.pricing;
+      let price = base[vehicleOption];
 
       if (isDublin || isBelfast) {
-        price += 30;
+        price += airportSurcharge;
       } else {
-        price += tripKm * 3;
+        price += tripKm * perKm;
       }
 
-      setPriceRange({ min: price - 25, max: price + 25 });
+      setPriceRange({ min: price - rangeMargin, max: price + rangeMargin });
     },
-    [vehicleOption]
+    [vehicleOption, country.pricing]
   );
 
   useEffect(() => {
@@ -281,6 +277,7 @@ export default function BookingFormCopy() {
     setIsCalculating(true);
     const bookingPayload = {
       legType: legType == "oneWay" ? "One Way" : "Round Trip",
+      countryName: country.name,
       origin,
       destination,
       selectedDate: selectedDate.format(country.dateFormat),
@@ -293,7 +290,10 @@ export default function BookingFormCopy() {
           : "Special",
       vehicleOption,
       distanceKm,
-      priceRange,
+      priceRange: {
+        min: currencyFormatter.format(priceRange?.min ?? 0),
+        max: currencyFormatter.format(priceRange?.max ?? 0),
+      },
       firstName,
       lastName,
       email,

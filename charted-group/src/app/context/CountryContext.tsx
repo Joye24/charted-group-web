@@ -14,35 +14,74 @@ export type CountryCode = "IE" | "ES" | "NG" | "SA"; // etc
 
 interface CountryInfo {
   code: CountryCode;
+  name: string;
   locale: string;
   currency: string;
   dateFormat: string;
+  pricing: {
+    base: {
+      "E-Class": number;
+      "S-Class": number;
+      "V-Class": number;
+    };
+    perKm: number;
+    rangeMargin: number;
+    airportSurcharge: number;
+  };
 }
 
 const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
   IE: {
     code: "IE",
+    name: "Ireland",
     locale: "en-IE",
     currency: "EUR",
     dateFormat: "DD/MM/YYYY",
+    pricing: {
+      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100 },
+      perKm: 3,
+      rangeMargin: 25,
+      airportSurcharge: 30,
+    },
   },
   ES: {
     code: "ES",
+    name: "Spain",
     locale: "es-ES",
     currency: "EUR",
     dateFormat: "DD/MM/YYYY",
+    pricing: {
+      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100 },
+      perKm: 3,
+      rangeMargin: 25,
+      airportSurcharge: 30,
+    },
   },
   NG: {
     code: "NG",
+    name: "Nigeria",
     locale: "en-NG",
     currency: "NGN",
     dateFormat: "DD/MM/YYYY",
+    pricing: {
+      base: { "E-Class": 9000, "S-Class": 10000, "V-Class": 10500 },
+      perKm: 700,
+      rangeMargin: 5000,
+      airportSurcharge: 15000,
+    },
   },
   SA: {
     code: "SA",
+    name: "Saudi Arabia",
     locale: "ar-SA",
     currency: "SAR",
     dateFormat: "MM/DD/YYYY",
+    pricing: {
+      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100 },
+      perKm: 6,
+      rangeMargin: 15,
+      airportSurcharge: 30,
+    },
   },
 };
 

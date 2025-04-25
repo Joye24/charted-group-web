@@ -48,7 +48,7 @@ export default function RootLayout({
             <ParallaxWrapper>
               <MenuHeader />
               {children}
-              <Toaster position="bottom-right" />
+              <Toaster position="bottom-center" />
             </ParallaxWrapper>
             <Footer />
           </LenisWrapper>

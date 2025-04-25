@@ -5,6 +5,7 @@ import * as brevo from "@getbrevo/brevo";
 type Booking = {
   legType: string;
   origin: string;
+  countryName: string;
   destination: string;
   selectedDate: string;
   flightNumber?: string;
@@ -34,8 +35,9 @@ export async function POST(request: Request) {
       <strong>Phone:</strong> ${booking.phone}
       </p>
       <hr/>
-      <p><strong>Origin:</strong> ${booking.origin}<br/>
-         <strong>Destination:</strong> ${booking.destination}</p>
+      <p><strong>Country:</strong> ${booking.countryName}<br/>
+        <strong>Origin:</strong> ${booking.origin}<br/>
+        <strong>Destination:</strong> ${booking.destination}</p>
       <p><strong>Date:</strong> ${booking.selectedDate}<br/>
          <strong>Time Period:</strong> ${booking.timePeriod}<br/>
       ${
@@ -46,10 +48,9 @@ export async function POST(request: Request) {
       </p>
       <p><strong>Vehicle:</strong> ${booking.vehicleOption}<br/>
          <strong>Distance:</strong> ${booking.distanceKm.toFixed(1)} km<br/>
-         <strong>Estimated Fare:</strong> 
-         €${booking.priceRange.min.toFixed(
-           0
-         )} – €${booking.priceRange.max.toFixed(0)}
+         <strong>Estimated Fare:</strong> ${booking.priceRange.min} – ${
+    booking.priceRange.max
+  }
          </p>
     </div>
   `;
