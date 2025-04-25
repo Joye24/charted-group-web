@@ -1,20 +1,36 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { FadeUpOnScroll } from "./FadeUpOnScroll";
 import Image from "next/image";
+import Modal from "./Modal";
+import BookingForm from "./BookingForm";
 
 export default function BrandSection() {
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lenis = (window as any)._lenis;
+    if (showModal) lenis?.stop();
+    else lenis?.start();
+    return () => lenis?.start();
+  }, [showModal]);
+
   return (
     <div className="brand-section-container gap-6 px-10 md:px-25 py-25">
       {/* Heading with multiple lines */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start text-2xl md:text-5xl font-thin mb-12 leading-relaxed">
         <div className="md:col-span-2 flex flex-col w-full">
           <FadeUpOnScroll className="block h-auto duration-800">
-            Charted Group is a leading luxury ground transportation service in Ireland, providing transportation solutions for your private travel requirements.
+            Charted Group is a leading luxury ground transportation service in
+            Ireland, providing transportation solutions for your private travel
+            requirements.
           </FadeUpOnScroll>
           <FadeUpOnScroll className="block h-auto my-10 text-xl md:text-2xl duration-800">
             <button
               type="button"
+              onClick={() => setShowModal(true)}
               className="
           flex
           items-center
@@ -44,6 +60,17 @@ export default function BrandSection() {
               BOOK A RIDE
             </button>
           </FadeUpOnScroll>
+          {showModal && (
+            <Modal onClose={() => setShowModal(false)}>
+              {/* You can add a custom close button inside if you like */}
+              <button
+                className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+                onClick={() => setShowModal(false)}>
+                &times;
+              </button>
+              <BookingForm />
+            </Modal>
+          )}
         </div>
         <div className="flex w-full justify-center md:justify-end mt-20 md:mt-5 md:pt-30">
           <FadeUpOnScroll className="block h-auto duration-1500">

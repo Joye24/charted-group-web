@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { inter } from "./fonts";
 import "./globals.css";
 import { CountryProvider } from "./context/CountryContext";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   icons: {
@@ -43,16 +44,18 @@ export default function RootLayout({
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"></meta>
       </head>
       <body>
-        <CountryProvider>
-          <LenisWrapper>
-            <ParallaxWrapper>
-              <MenuHeader />
-              {children}
-              <Toaster position="bottom-center" />
-            </ParallaxWrapper>
-            <Footer />
-          </LenisWrapper>
-        </CountryProvider>
+        <Suspense fallback={/* you can put a spinner or null here */ null}>
+          <CountryProvider>
+            <LenisWrapper>
+              <ParallaxWrapper>
+                <MenuHeader />
+                {children}
+                <Toaster position="bottom-center" />
+              </ParallaxWrapper>
+              <Footer />
+            </LenisWrapper>
+          </CountryProvider>
+        </Suspense>
       </body>
     </html>
   );
