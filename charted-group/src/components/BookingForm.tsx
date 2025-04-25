@@ -14,6 +14,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
+import toast from "react-hot-toast";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
@@ -33,7 +34,6 @@ export default function BookingFormCopy() {
   const [destination, setDestination] = useState("");
   const [flightNumberEnabled, setFlightNumberEnabled] = useState(false);
   const [flightNumber, setFlightNumber] = useState("");
-  const [bookingType] = useState<"prebook" | "hail">("prebook");
   const [distanceKm, setDistanceKm] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState(dayjs(minBookingDate));
   const [vehicleOption, setVehicleOption] = useState<
@@ -86,43 +86,50 @@ export default function BookingFormCopy() {
 
   // once maps+places loaded, wire up both inputs:
   useEffect(() => {
-    if (!places || step != 1) return;
+    if (!places) return;
 
-    console.log("Places loaded", places);
+    let ac1: google.maps.places.Autocomplete | null = null;
+    let ac2: google.maps.places.Autocomplete | null = null;
 
-    // hook up origin autocomplete
-    if (originInputRef.current) {
-      const ac = new places.Autocomplete(originInputRef.current, {
-        fields: ["formatted_address", "geometry.location"],
-      });
-      ac.addListener("place_changed", () => {
-        const p = ac.getPlace();
-        if (p.formatted_address && p.geometry?.location) {
-          setOrigin(p.formatted_address);
-          setOriginCoords({
-            lat: p.geometry.location.lat(),
-            lng: p.geometry.location.lng(),
-          });
-        }
-      });
+    if (step === 1) {
+      if (originInputRef.current) {
+        ac1 = new places.Autocomplete(originInputRef.current, {
+          fields: ["formatted_address", "geometry.location"],
+        });
+        ac1.addListener("place_changed", () => {
+          const p = ac1!.getPlace();
+          if (p.formatted_address && p.geometry?.location) {
+            setOrigin(p.formatted_address);
+            setOriginCoords({
+              lat: p.geometry.location.lat(),
+              lng: p.geometry.location.lng(),
+            });
+          }
+        });
+      }
+
+      if (destInputRef.current) {
+        ac2 = new places.Autocomplete(destInputRef.current, {
+          fields: ["formatted_address", "geometry.location"],
+        });
+        ac2.addListener("place_changed", () => {
+          const p = ac2!.getPlace();
+          if (p.formatted_address && p.geometry?.location) {
+            setDestination(p.formatted_address);
+            setDestCoords({
+              lat: p.geometry.location.lat(),
+              lng: p.geometry.location.lng(),
+            });
+          }
+        });
+      }
     }
 
-    // hook up destination autocomplete
-    if (destInputRef.current) {
-      const ac2 = new places.Autocomplete(destInputRef.current, {
-        fields: ["formatted_address", "geometry.location"],
-      });
-      ac2.addListener("place_changed", () => {
-        const p = ac2.getPlace();
-        if (p.formatted_address && p.geometry?.location) {
-          setDestination(p.formatted_address);
-          setDestCoords({
-            lat: p.geometry.location.lat(),
-            lng: p.geometry.location.lng(),
-          });
-        }
-      });
-    }
+    return () => {
+      // clean up any listeners we added last time
+      if (ac1) google.maps.event.clearInstanceListeners(ac1);
+      if (ac2) google.maps.event.clearInstanceListeners(ac2);
+    };
   }, [places, step]);
 
   // when both coords ready, compute driving distance
@@ -246,20 +253,6 @@ export default function BookingFormCopy() {
   ]);
 
   function handleNext() {
-    // For now, just console log
-    console.log({
-      legType,
-      origin,
-      selectedDate: selectedDate.format("YYYY-MM-DD"),
-      destination,
-      flightNumber: flightNumberEnabled ? flightNumber : "N/A",
-      timePeriod,
-      bookingType,
-      vehicleOption,
-      distanceKm,
-      priceRange,
-    });
-
     setStep(2);
   }
 
@@ -267,14 +260,59 @@ export default function BookingFormCopy() {
     setStep(1);
   }
 
-  function handleSubmit() {
-    // For now, just console log
-    console.log({
+  async function handleSubmit() {
+    const bookingPayload = {
+      legType: legType == "oneWay" ? "One Way" : "Round Trip",
+      origin,
+      destination,
+      selectedDate: selectedDate.format("YYYY-MM-DD"),
+      flightNumber: flightNumberEnabled ? flightNumber : "N/A",
+      timePeriod:
+        timePeriod == "standard"
+          ? "Standard"
+          : timePeriod == "premium"
+          ? "Premium"
+          : "Special",
+      vehicleOption,
+      distanceKm,
+      priceRange,
       firstName,
       lastName,
       email,
       phone,
+    };
+
+    const res = await fetch("/api/sendBooking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingPayload),
     });
+
+    if (res.ok) {
+      toast.success("Booking sent!");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhone("");
+      setFlightNumberEnabled(false);
+      setFlightNumber("");
+      setOrigin("");
+      setDestination("");
+      setFlightNumber("");
+      setPriceRange(null);
+      setDistanceKm(null);
+      setVehicleOption("V-Class");
+      setTimePeriod("standard");
+      setSelectedDate(dayjs(minBookingDate));
+      setLegType("oneWay");
+      setFareError(false);
+      setOriginCoords(null);
+      setDestCoords(null);
+      setStep(1);
+    } else {
+      toast.error("Failed to send booking, please try again.");
+      console.log("Response:", await res.json());
+    }
   }
 
   return (
@@ -338,139 +376,141 @@ export default function BookingFormCopy() {
         </span> */}
       </div>
 
-      {step === 1 ? (
-        /* ─── STEP 1: travel details ─── */
-        <div className="flex flex-col gap-5 w-full text-left">
-          {/* Row 1: Origin (left), Date (right) */}
-          <div className="flex flex-col lg:flex-row lg:gap-5">
-            {/* Origin */}
-            <div className="w-full">
-              <FloatingLabelInput
-                ref={originInputRef}
-                label="Origin*"
-                id="origin"
-                placeholder="Enter your origin"
-                value={origin}
-                onChange={setOrigin}
-                required={true}
+      <div
+        className={`
+          flex flex-col gap-5 w-full text-left
+          ${step !== 1 ? "hidden" : ""}
+        `}>
+        {/* Row 1: Origin (left), Date (right) */}
+        <div className="flex flex-col lg:flex-row lg:gap-5">
+          {/* Origin */}
+          <div className="w-full">
+            <FloatingLabelInput
+              ref={originInputRef}
+              label="Origin*"
+              id="origin"
+              placeholder="Enter your origin"
+              value={origin}
+              onChange={setOrigin}
+              required={true}
+            />
+          </div>
+
+          {/* Destination */}
+
+          <div className="w-full">
+            <FloatingLabelInput
+              ref={destInputRef}
+              label="Destination*"
+              placeholder="Enter your destination"
+              id="destination"
+              value={destination}
+              onChange={setDestination}
+              required={true}
+            />
+          </div>
+        </div>
+
+        {/* Row 2: Date (left), Time Period (right) */}
+        <div className="flex flex-col md:flex-row gap-5">
+          {/* Destination */}
+          <div className="w-full flex flex-col">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Departure Date*"
+                value={selectedDate}
+                onChange={(val) => val && setSelectedDate(val)}
+                format="DD/MM/YYYY"
+                minDate={minBookingDate}
               />
-            </div>
+            </LocalizationProvider>
+          </div>
 
-            {/* Destination */}
-
-            <div className="w-full">
+          {/* Time Period */}
+          <div className="flex flex-col w-full">
+            <FormControl fullWidth variant="outlined" className="mt-2">
+              <InputLabel id="timePeriod-label">Time Period*</InputLabel>
+              <Select
+                labelId="timePeriod-label"
+                id="timePeriod"
+                value={timePeriod}
+                label="Time Period*"
+                required
+                onChange={(e) =>
+                  setTimePeriod(
+                    e.target.value as "standard" | "premium" | "special"
+                  )
+                }>
+                <MenuItem value="standard">
+                  Standard (08:00 - 20:00, Mon-Sat)
+                </MenuItem>
+                <MenuItem value="premium">
+                  Premium (20:00 - 08:00, plus Sunday/PubHol)
+                </MenuItem>
+                <MenuItem value="special">
+                  Special (Sat &amp; Sun, 00:00 - 04:00)
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex flex-col w-full mb-5">
+            <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
+              <InputLabel id="vehicle-label">Vehicle*</InputLabel>
+              <Select
+                labelId="timvehicleePeriod-label"
+                id="vehicle*"
+                value={vehicleOption}
+                label="Vehicle"
+                required
+                onChange={(e) =>
+                  setVehicleOption(
+                    e.target.value as "V-Class" | "S-Class" | "E-Class"
+                  )
+                }>
+                <MenuItem value="V-Class">V-Class</MenuItem>
+                <MenuItem value="S-Class">S-Class</MenuItem>
+                <MenuItem value="E-Class">E-Class</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <div className="flex flex-col w-full mb-5">
+            {/* If checked, show the flight number text field */}
+            {flightNumberEnabled && (
               <FloatingLabelInput
-                ref={destInputRef}
-                label="Destination*"
-                placeholder="Enter your destination"
-                id="destination"
-                value={destination}
-                onChange={setDestination}
-                required={true}
+                label="Flight Number"
+                placeholder="e.g. EI123"
+                id="flightNumber"
+                value={flightNumber}
+                onChange={setFlightNumber}
+                required={false}
               />
+            )}
+
+            {/* Checkbox for flight number */}
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="flightCheckbox"
+                checked={flightNumberEnabled}
+                onChange={(e) => setFlightNumberEnabled(e.target.checked)}
+              />
+
+              <label
+                htmlFor="flightCheckbox"
+                className="text-xs text-[#191F32] cursor-pointer">
+                Add Flight Number
+              </label>
             </div>
           </div>
-
-          {/* Row 2: Date (left), Time Period (right) */}
-          <div className="flex flex-col md:flex-row gap-5">
-            {/* Destination */}
-            <div className="w-full flex flex-col">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  label="Departure Date*"
-                  value={selectedDate}
-                  onChange={(val) => val && setSelectedDate(val)}
-                  format="DD/MM/YYYY"
-                  minDate={minBookingDate}
-                />
-              </LocalizationProvider>
-            </div>
-
-            {/* Time Period */}
-            <div className="flex flex-col w-full">
-              <FormControl fullWidth variant="outlined" className="mt-2">
-                <InputLabel id="timePeriod-label">Time Period*</InputLabel>
-                <Select
-                  labelId="timePeriod-label"
-                  id="timePeriod"
-                  value={timePeriod}
-                  label="Time Period*"
-                  required
-                  onChange={(e) =>
-                    setTimePeriod(
-                      e.target.value as "standard" | "premium" | "special"
-                    )
-                  }>
-                  <MenuItem value="standard">
-                    Standard (08:00 - 20:00, Mon-Sat)
-                  </MenuItem>
-                  <MenuItem value="premium">
-                    Premium (20:00 - 08:00, plus Sunday/PubHol)
-                  </MenuItem>
-                  <MenuItem value="special">
-                    Special (Sat &amp; Sun, 00:00 - 04:00)
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row gap-5">
-            <div className="flex flex-col w-full mb-5">
-              <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
-                <InputLabel id="vehicle-label">Vehicle*</InputLabel>
-                <Select
-                  labelId="timvehicleePeriod-label"
-                  id="vehicle*"
-                  value={vehicleOption}
-                  label="Vehicle"
-                  required
-                  onChange={(e) =>
-                    setVehicleOption(
-                      e.target.value as "V-Class" | "S-Class" | "E-Class"
-                    )
-                  }>
-                  <MenuItem value="V-Class">V-Class</MenuItem>
-                  <MenuItem value="S-Class">S-Class</MenuItem>
-                  <MenuItem value="E-Class">E-Class</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <div className="flex flex-col w-full mb-5">
-              {/* If checked, show the flight number text field */}
-              {flightNumberEnabled && (
-                <FloatingLabelInput
-                  label="Flight Number"
-                  placeholder="e.g. EI123"
-                  id="flightNumber"
-                  value={flightNumber}
-                  onChange={setFlightNumber}
-                  required={false}
-                />
-              )}
-
-              {/* Checkbox for flight number */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="flightCheckbox"
-                  checked={flightNumberEnabled}
-                  onChange={(e) => setFlightNumberEnabled(e.target.checked)}
-                />
-
-                <label
-                  htmlFor="flightCheckbox"
-                  className="text-xs text-[#191F32] cursor-pointer">
-                  Add Flight Number
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row gap-5">
-            <div className="flex flex-col w-full mb-5">
-              <button
-                onClick={handleNext}
-                disabled={!priceRange}
-                className={`
+        </div>
+        <div className="flex flex-col md:flex-row gap-5">
+          <div className="flex flex-col w-full mb-5">
+            <button
+              onClick={handleNext}
+              disabled={!priceRange}
+              className={`
                 flex
                 max-w-full md:max-w-[150px]
                 items-center
@@ -493,97 +533,98 @@ export default function BookingFormCopy() {
                     : "hover:opacity-80"
                 }
                 `}>
-                <svg
-                  width="25"
-                  height="18"
-                  fill="none"
-                  className="mr-2"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
-                    fill="#fff"
-                  />
-                </svg>
-                Next
-              </button>
+              <svg
+                width="25"
+                height="18"
+                fill="none"
+                className="mr-2"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
+                  fill="#fff"
+                />
+              </svg>
+              Next
+            </button>
+          </div>
+          <div className="flex flex-col w-full mb-5">
+            <div className="flex items-center gap-2 mt-2 py-4 hidden">
+              {distanceKm != null && (
+                <div className="text-sm text-gray-600 font-bold">
+                  Distance: {distanceKm.toFixed(1)} km
+                </div>
+              )}
             </div>
-            <div className="flex flex-col w-full mb-5">
-              <div className="flex items-center gap-2 mt-2 py-4 hidden">
-                {distanceKm != null && (
-                  <div className="text-sm text-gray-600 font-bold">
-                    Distance: {distanceKm.toFixed(1)} km
-                  </div>
-                )}
-              </div>
-              <div className="mt-auto flex items-center gap-2 mt-2 py-4 justify-start">
-                {fareError ? (
-                  <span className="text-lg text-red-600 font-bold">
-                    Unable to Calculate Fare
-                  </span>
-                ) : priceRange ? (
-                  <div className="text-lg text-[#191F32] font-semibold mt-2">
-                    Estimated fare: {euro.format(priceRange.min)} – 
-                    {euro.format(priceRange.max)}
-                  </div>
-                ) : null}
-              </div>
+            <div className="mt-auto flex items-center gap-2 mt-2 py-4 justify-start">
+              {fareError ? (
+                <span className="text-lg text-red-600 font-bold">
+                  Unable to Calculate Fare
+                </span>
+              ) : priceRange ? (
+                <div className="text-lg text-[#191F32] font-semibold mt-2">
+                  Estimated fare: {euro.format(priceRange.min)} – 
+                  {euro.format(priceRange.max)}
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
-      ) : (
-        /* ─── STEP 2: personal details ─── */
-        <div
-          className="flex flex-col gap-5 w-full text-left transition-transform duration-300 transform"
-          // for slide/fade you can toggle translate-x and opacity here
-        >
-          <div className="flex flex-col lg:flex-row lg:gap-5">
-            <div className="w-full">
-              <FloatingLabelInput
-                ref={null}
-                label="First Name*"
-                id="firstName"
-                value={firstName}
-                onChange={setFirstName}
-                required
-                autoComplete="off"
-              />
-            </div>
-            <div className="w-full">
-              <FloatingLabelInput
-                label="Last Name*"
-                id="lastName"
-                value={lastName}
-                onChange={setLastName}
-                required
-              />
-            </div>
+      </div>
+
+      {/* Step 2: Personal Details */}
+      <div
+        className={`
+          flex flex-col gap-5 w-full text-left transition-transform duration-300 transform
+          ${step !== 2 ? "hidden" : ""}
+        `}>
+        <div className="flex flex-col lg:flex-row lg:gap-5">
+          <div className="w-full">
+            <FloatingLabelInput
+              ref={null}
+              label="First Name*"
+              id="firstName"
+              value={firstName}
+              onChange={setFirstName}
+              required
+              autoComplete="off"
+            />
           </div>
-          <div className="flex flex-col lg:flex-row lg:gap-5">
-            <div className="w-full">
-              <FloatingLabelInput
-                label="Email*"
-                id="email"
-                value={email}
-                onChange={setEmail}
-                required
-              />
-            </div>
-            <div className="w-full">
-              <FloatingLabelInput
-                label="Phone*"
-                id="phone"
-                value={phone}
-                onChange={setPhone}
-                required
-              />
-            </div>
+          <div className="w-full">
+            <FloatingLabelInput
+              label="Last Name*"
+              id="lastName"
+              value={lastName}
+              onChange={setLastName}
+              required
+            />
           </div>
-          <div className="flex gap-4">
-            <button
-              onClick={handleBack}
-              className="flex
+        </div>
+        <div className="flex flex-col lg:flex-row lg:gap-5">
+          <div className="w-full">
+            <FloatingLabelInput
+              label="Email*"
+              id="email"
+              value={email}
+              onChange={setEmail}
+              required
+            />
+          </div>
+          <div className="w-full">
+            <FloatingLabelInput
+              label="Phone*"
+              id="phone"
+              value={phone}
+              onChange={setPhone}
+              required
+            />
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <button
+            onClick={handleBack}
+            className="flex
                 max-w-full md:max-w-[150px]
                 items-center bg-slate-600 text-white
                 rounded-full
@@ -597,12 +638,12 @@ export default function BookingFormCopy() {
                 hover:opacity-80
                 text-center
                 justify-center min-w-[150px]">
-              Back
-            </button>
-            <button
-              onClick={handleSubmit}
-              disabled={!canSubmit}
-              className={`
+            Back
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={!canSubmit}
+            className={`
                 flex
                 max-w-full md:max-w-[150px]
                 items-center
@@ -624,11 +665,10 @@ export default function BookingFormCopy() {
                 text-center
                 justify-center  min-w-[150px]
                 `}>
-              Submit
-            </button>
-          </div>
+            Submit
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

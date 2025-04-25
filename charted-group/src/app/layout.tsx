@@ -3,6 +3,7 @@ import MenuHeader from "@/components/MenuHeader";
 import ParallaxWrapper from "@/components/ParallaxWrapper";
 import LenisWrapper from "@components/LenisWrapper";
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 import { inter } from "./fonts";
 import "./globals.css";
 
@@ -45,6 +46,7 @@ export default function RootLayout({
           <ParallaxWrapper>
             <MenuHeader />
             {children}
+            <Toaster position="bottom-right" />
           </ParallaxWrapper>
           <Footer />
         </LenisWrapper>
