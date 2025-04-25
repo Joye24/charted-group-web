@@ -6,6 +6,7 @@ import CopyRightFooter from "./CopyrightFooter";
 // import LocationsFooter from "./LocationsFooter";
 import PartnersFooter from "./PartnersFooter";
 import SocialFooter from "./SocialFooter";
+import CountrySwitcher from "./CountrySwitcher";
 
 export default function Footer() {
   return (
@@ -44,6 +45,9 @@ export default function Footer() {
         </div>
         <div className="w-full lg:w-1/3 flex justify-center lg:justify-end">
           <PartnersFooter />
+          <div className="fixed mr-1 mb-1 bottom-4 right-4 z-50 bg-gray-200 p-2 rounded shadow-lg text-slate-950 hidden lg:flex">
+            <CountrySwitcher />
+          </div>
         </div>
       </div>
 

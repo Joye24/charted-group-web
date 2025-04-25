@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Modal from "./Modal";
 import BookingForm from "./BookingForm";
+import CountrySwitcher from "./footer/CountrySwitcher";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -69,8 +70,7 @@ export default function MobileMenu({
                   onClick={onClose}
                   href="/about"
                   rel="noreferrer"
-                  className="block w-full no-underline"
-                >
+                  className="block w-full no-underline">
                   <p
                     className="
                      flex items-center gap-3
@@ -79,8 +79,7 @@ export default function MobileMenu({
                      text-blue-950
                      cursor-pointer
                      hover:bg-gray-200
-                   "
-                  >
+                   ">
                     About Us
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -88,8 +87,7 @@ export default function MobileMenu({
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="h-6 w-6 ml-auto"
-                    >
+                      className="h-6 w-6 ml-auto">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -103,8 +101,7 @@ export default function MobileMenu({
                   onClick={onClose}
                   href="/services"
                   rel="noreferrer"
-                  className="block w-full no-underline"
-                >
+                  className="block w-full no-underline">
                   <p
                     className="flex 
                              items-center 
@@ -114,8 +111,7 @@ export default function MobileMenu({
                              px-4
                              text-blue-950
                              cursor-pointer
-                             hover:bg-gray-200"
-                  >
+                             hover:bg-gray-200">
                     Services
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -123,8 +119,7 @@ export default function MobileMenu({
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="h-6 w-6 ml-auto"
-                    >
+                      className="h-6 w-6 ml-auto">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -133,6 +128,9 @@ export default function MobileMenu({
                     </svg>
                   </p>
                 </Link>
+                <div className="bg-gray-200 p-2 rounded shadow-lg text-slate-950">
+                  <CountrySwitcher />
+                </div>
               </div>
             </div>
 
@@ -159,21 +157,18 @@ export default function MobileMenu({
                  font-normal
                  h-[50px]
                  px-6
-               "
-              >
+               ">
                 <svg
                   width="25"
                   height="18"
                   fill="none"
                   className="mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
-                    fill="currentColor"
-                  ></path>
+                    fill="currentColor"></path>
                 </svg>
 
                 <span>Book Your Ride</span>
@@ -191,8 +186,7 @@ export default function MobileMenu({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none"
-                  >
+                    className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
                       alt="IE Phone"
                       src="/images/flags/ie.svg"
@@ -208,8 +202,7 @@ export default function MobileMenu({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none"
-                  >
+                    className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
                       alt="ES Phone"
                       src="/images/flags/es.svg"
@@ -225,8 +218,7 @@ export default function MobileMenu({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none"
-                  >
+                    className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
                       alt="NG Phone"
                       src="/images/flags/ng.svg"
@@ -242,8 +234,7 @@ export default function MobileMenu({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none"
-                  >
+                    className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
                       alt="SA Phone"
                       src="/images/flags/sa.svg"
@@ -259,8 +250,7 @@ export default function MobileMenu({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none"
-                  >
+                    className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
                       alt="Whatsapp"
                       src="/icons/whatsapp.svg"
@@ -276,8 +266,7 @@ export default function MobileMenu({
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none"
-                  >
+                    className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
                       alt="Email"
                       src="/icons/envelope.svg"
@@ -311,21 +300,18 @@ export default function MobileMenu({
                  font-normal
                  h-[50px]
                  px-6
-               "
-              >
+               ">
                 <svg
                   width="25"
                   height="18"
                   fill="none"
                   className="mr-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                  xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
                     d="M20.7749 8.50028C17.0421 6.31653 15.477 2.82631 15.1487 1.09333L16.1313 0.907227C16.4639 2.66321 18.3432 6.73857 23.174 8.53152L24.4522 9.00593L23.1703 9.47037C22.2338 9.80968 20.7268 10.6093 19.3236 11.8904C17.9234 13.1687 16.6495 14.9049 16.1266 17.1154L15.1534 16.8852C15.7345 14.429 17.1439 12.5263 18.6494 11.1519C19.3835 10.4817 20.1458 9.93193 20.8569 9.50028H0V8.50028H20.7749Z"
-                    fill="currentColor"
-                  ></path>
+                    fill="currentColor"></path>
                 </svg>
 
                 <span>Book Your Ride</span>
@@ -337,8 +323,7 @@ export default function MobileMenu({
           <Modal onClose={() => setShowModal(false)}>
             <button
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-              onClick={() => setShowModal(false)}
-            >
+              onClick={() => setShowModal(false)}>
               &times;
             </button>
             <BookingForm />

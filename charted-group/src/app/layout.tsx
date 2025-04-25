@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import { inter } from "./fonts";
 import "./globals.css";
+import { CountryProvider } from "./context/CountryContext";
 
 export const metadata: Metadata = {
   icons: {
@@ -42,14 +43,16 @@ export default function RootLayout({
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"></meta>
       </head>
       <body>
-        <LenisWrapper>
-          <ParallaxWrapper>
-            <MenuHeader />
-            {children}
-            <Toaster position="bottom-right" />
-          </ParallaxWrapper>
-          <Footer />
-        </LenisWrapper>
+        <CountryProvider>
+          <LenisWrapper>
+            <ParallaxWrapper>
+              <MenuHeader />
+              {children}
+              <Toaster position="bottom-right" />
+            </ParallaxWrapper>
+            <Footer />
+          </LenisWrapper>
+        </CountryProvider>
       </body>
     </html>
   );

@@ -15,12 +15,14 @@ import dayjs from "dayjs";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useMapsLibrary } from "@vis.gl/react-google-maps";
 import toast from "react-hot-toast";
+import { useCountry } from "@/app/context/CountryContext";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
 export default function BookingFormCopy() {
   const originInputRef = useRef<HTMLInputElement>(null);
   const destInputRef = useRef<HTMLInputElement>(null);
+  const { country } = useCountry();
 
   // ————— Autocomplete refs & coords —————
   const [originCoords, setOriginCoords] = useState<LatLngLiteral | null>(null);
@@ -58,14 +60,14 @@ export default function BookingFormCopy() {
     max: number;
   } | null>(null);
 
-  const euro = useMemo(
+  const currencyFormatter = useMemo(
     () =>
-      new Intl.NumberFormat("en-IE", {
+      new Intl.NumberFormat(country.locale, {
         style: "currency",
-        currency: "EUR",
+        currency: country.currency,
         maximumFractionDigits: 0,
       }),
-    []
+    [country]
   );
 
   const isEmailValid = useMemo(
@@ -95,6 +97,7 @@ export default function BookingFormCopy() {
       if (originInputRef.current) {
         ac1 = new places.Autocomplete(originInputRef.current, {
           fields: ["formatted_address", "geometry.location"],
+          componentRestrictions: { country: country.code },
         });
         ac1.addListener("place_changed", () => {
           const p = ac1!.getPlace();
@@ -111,6 +114,7 @@ export default function BookingFormCopy() {
       if (destInputRef.current) {
         ac2 = new places.Autocomplete(destInputRef.current, {
           fields: ["formatted_address", "geometry.location"],
+          componentRestrictions: { country: country.code },
         });
         ac2.addListener("place_changed", () => {
           const p = ac2!.getPlace();
@@ -130,7 +134,16 @@ export default function BookingFormCopy() {
       if (ac1) google.maps.event.clearInstanceListeners(ac1);
       if (ac2) google.maps.event.clearInstanceListeners(ac2);
     };
-  }, [places, step]);
+  }, [places, step, country.code]);
+
+  useEffect(() => {
+    setOrigin("");
+    setDestination("");
+    setOriginCoords(null);
+    setDestCoords(null);
+    setDistanceKm(null);
+    setPriceRange(null);
+  }, [country.code]);
 
   // when both coords ready, compute driving distance
   useEffect(() => {
@@ -253,19 +266,24 @@ export default function BookingFormCopy() {
   ]);
 
   function handleNext() {
+    setIsCalculating(true);
     setStep(2);
+    setIsCalculating(false);
   }
 
   function handleBack() {
+    setIsCalculating(true);
     setStep(1);
+    setIsCalculating(false);
   }
 
   async function handleSubmit() {
+    setIsCalculating(true);
     const bookingPayload = {
       legType: legType == "oneWay" ? "One Way" : "Round Trip",
       origin,
       destination,
-      selectedDate: selectedDate.format("YYYY-MM-DD"),
+      selectedDate: selectedDate.format(country.dateFormat),
       flightNumber: flightNumberEnabled ? flightNumber : "N/A",
       timePeriod:
         timePeriod == "standard"
@@ -313,10 +331,12 @@ export default function BookingFormCopy() {
       toast.error("Failed to send booking, please try again.");
       console.log("Response:", await res.json());
     }
+
+    setIsCalculating(false);
   }
 
   return (
-    <div className="relative flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/90 lg:bg-white/85 h-full">
+    <div className="relative flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/95 lg:bg-white/95 h-full">
       {isCalculating && (
         <div className="absolute inset-0 z-10 bg-white/70 flex items-center justify-center">
           {/* simple SVG spinner */}
@@ -382,7 +402,7 @@ export default function BookingFormCopy() {
           ${step !== 1 ? "hidden" : ""}
         `}>
         {/* Row 1: Origin (left), Date (right) */}
-        <div className="flex flex-col lg:flex-row lg:gap-5">
+        <div className="flex flex-col xl:flex-row lg:gap-5">
           {/* Origin */}
           <div className="w-full">
             <FloatingLabelInput
@@ -412,7 +432,7 @@ export default function BookingFormCopy() {
         </div>
 
         {/* Row 2: Date (left), Time Period (right) */}
-        <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex flex-col xl:flex-row gap-5">
           {/* Destination */}
           <div className="w-full flex flex-col">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -420,7 +440,7 @@ export default function BookingFormCopy() {
                 label="Departure Date*"
                 value={selectedDate}
                 onChange={(val) => val && setSelectedDate(val)}
-                format="DD/MM/YYYY"
+                format={country.dateFormat}
                 minDate={minBookingDate}
               />
             </LocalizationProvider>
@@ -454,7 +474,7 @@ export default function BookingFormCopy() {
             </FormControl>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex flex-col xl:flex-row gap-5">
           <div className="flex flex-col w-full mb-5">
             <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
               <InputLabel id="vehicle-label">Vehicle*</InputLabel>
@@ -505,7 +525,7 @@ export default function BookingFormCopy() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-5">
+        <div className="flex flex-col xl:flex-row gap-5">
           <div className="flex flex-col w-full mb-5">
             <button
               onClick={handleNext}
@@ -564,8 +584,8 @@ export default function BookingFormCopy() {
                 </span>
               ) : priceRange ? (
                 <div className="text-lg text-[#191F32] font-semibold mt-2">
-                  Estimated fare: {euro.format(priceRange.min)} – 
-                  {euro.format(priceRange.max)}
+                  Estimated fare: {currencyFormatter.format(priceRange.min)} – 
+                  {currencyFormatter.format(priceRange.max)}
                 </div>
               ) : null}
             </div>
@@ -579,7 +599,7 @@ export default function BookingFormCopy() {
           flex flex-col gap-5 w-full text-left transition-transform duration-300 transform
           ${step !== 2 ? "hidden" : ""}
         `}>
-        <div className="flex flex-col lg:flex-row lg:gap-5">
+        <div className="flex flex-col xl:flex-row lg:gap-5">
           <div className="w-full">
             <FloatingLabelInput
               ref={null}
@@ -601,7 +621,7 @@ export default function BookingFormCopy() {
             />
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row lg:gap-5">
+        <div className="flex flex-col xl:flex-row lg:gap-5">
           <div className="w-full">
             <FloatingLabelInput
               label="Email*"
