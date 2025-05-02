@@ -19,7 +19,7 @@ import { useCountry } from "@/app/context/CountryContext";
 
 type LatLngLiteral = google.maps.LatLngLiteral;
 
-export default function BookingFormCopy() {
+export default function BookingForm() {
   const originInputRef = useRef<HTMLInputElement>(null);
   const destInputRef = useRef<HTMLInputElement>(null);
   const { country } = useCountry();
@@ -38,9 +38,7 @@ export default function BookingFormCopy() {
   const [flightNumber, setFlightNumber] = useState("");
   const [distanceKm, setDistanceKm] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState(dayjs(minBookingDate));
-  const [vehicleOption, setVehicleOption] = useState<
-    "V-Class" | "S-Class" | "E-Class"
-  >("V-Class");
+  const [vehicleOption, setVehicleOption] = useState("");
 
   const [timePeriod, setTimePeriod] = useState<
     "standard" | "premium" | "special"
@@ -114,7 +112,7 @@ export default function BookingFormCopy() {
       if (destInputRef.current) {
         ac2 = new places.Autocomplete(destInputRef.current, {
           fields: ["formatted_address", "geometry.location"],
-          componentRestrictions: { country: country.code },
+          //componentRestrictions: { country: country.code },
         });
         ac2.addListener("place_changed", () => {
           const p = ac2!.getPlace();
@@ -211,8 +209,8 @@ export default function BookingFormCopy() {
     setPriceRange(null);
     setFareError(false);
 
-    if (!originCoords || !destCoords || distanceKm == null) {
-      // nothing to do yet
+    // validation: if no coords, vehicleOption, or distance, then nothing to do yet
+    if (!originCoords || !destCoords || distanceKm == null || !vehicleOption) {
       return;
     }
 
@@ -479,19 +477,17 @@ export default function BookingFormCopy() {
             <FormControl fullWidth variant="outlined" className="mt-2 mb-5">
               <InputLabel id="vehicle-label">Vehicle*</InputLabel>
               <Select
-                labelId="timvehicleePeriod-label"
-                id="vehicle*"
+                labelId="vehicle-label"
+                id="vehicle"
                 value={vehicleOption}
-                label="Vehicle"
+                label="Vehicle*"
                 required
-                onChange={(e) =>
-                  setVehicleOption(
-                    e.target.value as "V-Class" | "S-Class" | "E-Class"
-                  )
-                }>
-                <MenuItem value="V-Class">V-Class</MenuItem>
-                <MenuItem value="S-Class">S-Class</MenuItem>
-                <MenuItem value="E-Class">E-Class</MenuItem>
+                onChange={(e) => setVehicleOption(e.target.value)}>
+                {country.vehicles.map((v) => (
+                  <MenuItem key={v} value={v}>
+                    {v}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </div>

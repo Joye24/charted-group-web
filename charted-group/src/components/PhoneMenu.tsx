@@ -10,13 +10,15 @@ interface PhoneMenuProps {
   dropdownPosition: { top: number; left: number };
 }
 
-export default function PhoneMenu({ isOpen, onClose, dropdownPosition }: PhoneMenuProps) {
+export default function PhoneMenu({
+  isOpen,
+  onClose,
+  dropdownPosition,
+}: PhoneMenuProps) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-[2] text-sm"
-      onClick={onClose}>
+    <div className="fixed inset-0 z-[2] text-sm" onClick={onClose}>
       {/* Fullscreen Blurry Overlay */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       {/* Dropdown Menu positioned under the phone button */}
@@ -45,22 +47,7 @@ export default function PhoneMenu({ isOpen, onClose, dropdownPosition }: PhoneMe
               <span>+353 00 0000000</span>
             </Link>
           </li>
-          <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
-            <Link
-              href="tel:+33300000000000"
-              target="_blank"
-              rel="noreferrer"
-              onClick={onClose}
-              className="flex gap-2 px-4 py-2 decoration-none">
-              <Image
-                alt="ES Phone"
-                src="/images/flags/es.svg"
-                width={17}
-                height={17}
-              />{" "}
-              <span>+33 00 0000000</span>
-            </Link>
-          </li>
+
           <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
             <Link
               href="tel:+23400000000000"
@@ -79,18 +66,34 @@ export default function PhoneMenu({ isOpen, onClose, dropdownPosition }: PhoneMe
           </li>
           <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
             <Link
-              href="tel:+97100000000000"
+              href="tel:+4400000000000"
               target="_blank"
               rel="noreferrer"
               onClick={onClose}
               className="flex gap-2 px-4 py-2 decoration-none">
               <Image
-                alt="SA Phone"
-                src="/images/flags/sa.svg"
+                alt="GB Phone"
+                src="/images/flags/gb.svg"
                 width={17}
                 height={17}
               />{" "}
-              <span>+971 00 0000000</span>
+              <span>+44 00 0000000</span>
+            </Link>
+          </li>
+          <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
+            <Link
+              href="tel:+33300000000000"
+              target="_blank"
+              rel="noreferrer"
+              onClick={onClose}
+              className="flex gap-2 px-4 py-2 decoration-none">
+              <Image
+                alt="ES Phone"
+                src="/images/flags/es.svg"
+                width={17}
+                height={17}
+              />{" "}
+              <span>+33 00 0000000</span>
             </Link>
           </li>
           <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
@@ -111,7 +114,7 @@ export default function PhoneMenu({ isOpen, onClose, dropdownPosition }: PhoneMe
           </li>
           <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
             <Link
-              href="mailto:info@chartedgroup.com"
+              href="mailto:chartedinfo@gmail.com"
               target="_blank"
               rel="noreferrer"
               onClick={onClose}
@@ -122,7 +125,7 @@ export default function PhoneMenu({ isOpen, onClose, dropdownPosition }: PhoneMe
                 width={22}
                 height={22}
               />{" "}
-              <span>info@chartedgroup.com</span>
+              <span>chartedinfo@gmail.com</span>
             </Link>
           </li>
         </ul>

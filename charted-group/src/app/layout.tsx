@@ -30,7 +30,6 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8"></meta>
         <meta property="og:title" content={`${metadata.title}`}></meta>
-
         <meta property="og:site_name" content={`${metadata.title}`}></meta>
         <meta name="og:description" content={`${metadata.description}`}></meta>
         <meta property="og:locale" content="en"></meta>

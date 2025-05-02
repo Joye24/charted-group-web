@@ -10,7 +10,7 @@ import React, {
 } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
-export type CountryCode = "IE" | "ES" | "NG" | "SA"; // etc
+export type CountryCode = "IE" | "GB" | "ES" | "NG"; // etc
 
 interface CountryInfo {
   code: CountryCode;
@@ -18,16 +18,17 @@ interface CountryInfo {
   locale: string;
   currency: string;
   dateFormat: string;
+  vehicles: string[];
   pricing: {
     base: {
-      "E-Class": number;
-      "S-Class": number;
-      "V-Class": number;
+      [vehicle: string]: number;
     };
     perKm: number;
     rangeMargin: number;
     airportSurcharge: number;
   };
+  vehicleDescription: string;
+  capacityImage: string;
 }
 
 const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
@@ -37,25 +38,56 @@ const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
     locale: "en-IE",
     currency: "EUR",
     dateFormat: "DD/MM/YYYY",
+    vehicles: ["E-Class", "S-Class", "V-Class", "EQS"],
     pricing: {
-      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100 },
+      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100, EQS: 100 },
       perKm: 3,
       rangeMargin: 25,
       airportSurcharge: 30,
     },
+    vehicleDescription: `Mercedes MPV vehicles seat up to six passengers, when all seats
+              are in use. Alternatively the seats can also be turned into a
+              conference seating position at the clients request. The boot
+              offers good luggage space.`,
+    capacityImage: "/images/vehicles/capacity.png",
+  },
+  GB: {
+    code: "GB",
+    name: "United Kingdom",
+    locale: "en-GB",
+    currency: "GBP",
+    dateFormat: "MM/DD/YYYY",
+    vehicles: ["E-Class", "S-Class", "V-Class", "EQS"],
+    pricing: {
+      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100, EQS: 100 },
+      perKm: 6,
+      rangeMargin: 15,
+      airportSurcharge: 30,
+    },
+    vehicleDescription: `Mercedes MPV vehicles seat up to six passengers, when all seats
+              are in use. Alternatively the seats can also be turned into a
+              conference seating position at the clients request. The boot
+              offers good luggage space.`,
+    capacityImage: "/images/vehicles/capacity.png",
   },
   ES: {
     code: "ES",
     name: "Spain",
     locale: "es-ES",
     currency: "EUR",
+    vehicles: ["E-Class", "S-Class", "V-Class", "EQS"],
     dateFormat: "DD/MM/YYYY",
     pricing: {
-      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100 },
+      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100, EQS: 100 },
       perKm: 3,
       rangeMargin: 25,
-      airportSurcharge: 30,
+      airportSurcharge: 0,
     },
+    vehicleDescription: `Mercedes MPV vehicles seat up to six passengers, when all seats
+              are in use. Alternatively the seats can also be turned into a
+              conference seating position at the clients request. The boot
+              offers good luggage space.`,
+    capacityImage: "/images/vehicles/capacity.png",
   },
   NG: {
     code: "NG",
@@ -63,27 +95,20 @@ const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
     locale: "en-NG",
     currency: "NGN",
     dateFormat: "DD/MM/YYYY",
+    vehicles: ["GAC GS4", "Toyota LC Prado"],
     pricing: {
-      base: { "E-Class": 9000, "S-Class": 10000, "V-Class": 10500 },
-      perKm: 700,
+      base: { "GAC GS4": 20000, "Toyota LC Prado": 50000 },
+      perKm: 1500,
       rangeMargin: 5000,
-      airportSurcharge: 15000,
+      airportSurcharge: 0,
     },
-  },
-  SA: {
-    code: "SA",
-    name: "Saudi Arabia",
-    locale: "ar-SA",
-    currency: "SAR",
-    dateFormat: "MM/DD/YYYY",
-    pricing: {
-      base: { "E-Class": 90, "S-Class": 100, "V-Class": 100 },
-      perKm: 6,
-      rangeMargin: 15,
-      airportSurcharge: 30,
-    },
+    vehicleDescription: `The new Toyato Land Cruiser Prado is a full-size SUV that seats up to 5 passengers. 
+    It is equipped with a powerful engine and advanced safety features, making it perfect for both city driving and off-road adventures.`,
+    capacityImage: "/images/vehicles/t-prado-capacity.jpg",
   },
 };
+
+// Toyota Land Cruiser Prado | GAC GS4 |
 
 const DEFAULT_COUNTRY = Object.keys(COUNTRY_MAP)[0] as CountryCode;
 

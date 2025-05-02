@@ -198,22 +198,6 @@ export default function MobileMenu({
                 </li>
                 <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
                   <Link
-                    href="tel:+33300000000000"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none">
-                    <Image
-                      alt="ES Phone"
-                      src="/images/flags/es.svg"
-                      width={17}
-                      height={17}
-                    />{" "}
-                    <span>+33 00 0000000</span>
-                  </Link>
-                </li>
-                <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
-                  <Link
                     href="tel:+23400000000000"
                     target="_blank"
                     rel="noreferrer"
@@ -230,18 +214,34 @@ export default function MobileMenu({
                 </li>
                 <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
                   <Link
-                    href="tel:+97100000000000"
+                    href="tel:+44 00000000000"
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
                     className="flex gap-2 px-4 py-2 decoration-none">
                     <Image
-                      alt="SA Phone"
-                      src="/images/flags/sa.svg"
+                      alt="GB Phone"
+                      src="/images/flags/gb.svg"
                       width={17}
                       height={17}
                     />{" "}
-                    <span>+971 00 0000000</span>
+                    <span>+44 00 0000000</span>
+                  </Link>
+                </li>
+                <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
+                  <Link
+                    href="tel:+33300000000000"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={onClose}
+                    className="flex gap-2 px-4 py-2 decoration-none">
+                    <Image
+                      alt="ES Phone"
+                      src="/images/flags/es.svg"
+                      width={17}
+                      height={17}
+                    />{" "}
+                    <span>+33 00 0000000</span>
                   </Link>
                 </li>
                 <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
@@ -262,7 +262,7 @@ export default function MobileMenu({
                 </li>
                 <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
                   <Link
-                    href="mailto:info@chartedgroup.com"
+                    href="mailto:chartedinfo@gmail.com"
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
@@ -273,7 +273,7 @@ export default function MobileMenu({
                       width={22}
                       height={22}
                     />{" "}
-                    <span>info@chartedgroup.com</span>
+                    <span>chartedinfo@gmail.com</span>
                   </Link>
                 </li>
               </ul>

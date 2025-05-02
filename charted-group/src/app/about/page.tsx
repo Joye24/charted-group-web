@@ -35,14 +35,14 @@ export default function About() {
             zIndex: 1,
           }}>
           <div className={`${ibmPlexSerif.className} w-full`}>
-            <h1 className="text-white text-5xl md:text-7xl leading-tight mb-4 font-light text-center pt-[5vh] pb-[50vh]">About Us</h1>
+            <h1 className="text-white text-5xl md:text-7xl leading-tight mb-4 font-light text-center pt-[5vh] pb-[50vh]">
+              About Us
+            </h1>
           </div>
         </div>
         <div>
           <svg className="absolute w-0 h-0">
-            <clipPath
-              id="my-clip-path"
-              clipPathUnits="objectBoundingBox">
+            <clipPath id="my-clip-path" clipPathUnits="objectBoundingBox">
               <path d="M0,0 C0,0.485,0.06,0.878,0.5,0.878 C0.94,0.878,1,0.485,1,0 V1 H0 V0" />
             </clipPath>
           </svg>
@@ -85,10 +85,14 @@ export default function About() {
                 fill="#FFF"></path>
             </svg>
             <FadeUpOnScroll className="duration-2000">
-              <p className={`${ibmPlexSerif.className} leading-relaxed text-xl lg:text-4xl font-thin`}>
-                At Charted Group, we believe that every road should be traveled in comfort and confidence. Our team strives daily to exceed expectations,
-                providing tailored car services that blend impeccable safety and genuine hospitality. This unwavering commitment to excellence is how we’ve
-                earned our clients’ trust and continue to evolve in the world of luxury ground travel.
+              <p
+                className={`${ibmPlexSerif.className} leading-relaxed text-xl lg:text-4xl font-thin`}>
+                At Charted Group, we believe that every road should be traveled
+                in comfort and confidence. Our team strives daily to exceed
+                expectations, providing tailored car services that blend
+                impeccable safety and genuine hospitality. This unwavering
+                commitment to excellence is how we’ve earned our clients’ trust
+                and continue to evolve in the world of luxury ground travel.
               </p>
             </FadeUpOnScroll>
           </div>
@@ -96,7 +100,9 @@ export default function About() {
             <div className="mt-10 mb-2 h-px w-[100px] bg-gray-300" />
           </FadeUpOnScroll>
           <FadeUpOnScroll className="duration-4000">
-            <div className="text-lg font-semibold text-gray-400">Funto Joye</div>
+            <div className="text-lg font-semibold text-gray-400">
+              Funto Joye
+            </div>
             <div className="text-base text-gray-500">CEO & Co-founder</div>
           </FadeUpOnScroll>
         </div>

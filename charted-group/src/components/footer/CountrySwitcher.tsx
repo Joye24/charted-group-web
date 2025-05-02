@@ -10,9 +10,9 @@ export default function CountrySwitcher() {
       onChange={(e) => setCountryByCode(e.target.value as CountryCode)}
       className="rounded border px-2 py-1">
       <option value="IE">Ireland</option>
+      <option value="GB">United Kingdom</option>
       <option value="ES">Spain</option>
       <option value="NG">Nigeria</option>
-      <option value="SA">Saudi Arabia</option>
     </select>
   );
 }
