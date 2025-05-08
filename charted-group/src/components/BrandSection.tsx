@@ -64,9 +64,9 @@ export default function BrandSection() {
             <Modal onClose={() => setShowModal(false)}>
               {/* You can add a custom close button inside if you like */}
               <button
-                className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+                className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 z-10"
                 onClick={() => setShowModal(false)}>
-                &times;
+                <span className="text-3xl">&times;</span>
               </button>
               <BookingForm />
             </Modal>

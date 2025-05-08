@@ -27,11 +27,15 @@ interface CountryInfo {
     rangeMargin: number;
     airportSurcharge: number;
   };
+  telephone: {
+    phone: string;
+    displayPhone: string;
+  };
   vehicleDescription: string;
   capacityImage: string;
 }
 
-const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
+export const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
   IE: {
     code: "IE",
     name: "Ireland",
@@ -45,11 +49,37 @@ const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
       rangeMargin: 25,
       airportSurcharge: 30,
     },
+    telephone: {
+      phone: "+353838887424",
+      displayPhone: "+353 (83) 888 7424",
+    },
     vehicleDescription: `Mercedes MPV vehicles seat up to six passengers, when all seats
               are in use. Alternatively the seats can also be turned into a
               conference seating position at the clients request. The boot
               offers good luggage space.`,
     capacityImage: "/images/vehicles/capacity.png",
+  },
+
+  NG: {
+    code: "NG",
+    name: "Nigeria",
+    locale: "en-NG",
+    currency: "NGN",
+    dateFormat: "DD/MM/YYYY",
+    vehicles: ["GAC GS4", "Toyota LC Prado"],
+    pricing: {
+      base: { "GAC GS4": 20000, "Toyota LC Prado": 50000 },
+      perKm: 1500,
+      rangeMargin: 5000,
+      airportSurcharge: 0,
+    },
+    telephone: {
+      phone: "+2348169778077",
+      displayPhone: "+234 816 977 8077",
+    },
+    vehicleDescription: `The new Toyato Land Cruiser Prado is a full-size SUV that seats up to 5 passengers. 
+    It is equipped with a powerful engine and advanced safety features, making it perfect for both city driving and off-road adventures.`,
+    capacityImage: "/images/vehicles/t-prado-capacity.jpg",
   },
   GB: {
     code: "GB",
@@ -63,6 +93,10 @@ const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
       perKm: 6,
       rangeMargin: 15,
       airportSurcharge: 30,
+    },
+    telephone: {
+      phone: "+447469094770",
+      displayPhone: "+44 7469 094770",
     },
     vehicleDescription: `Mercedes MPV vehicles seat up to six passengers, when all seats
               are in use. Alternatively the seats can also be turned into a
@@ -83,28 +117,15 @@ const COUNTRY_MAP: Record<CountryCode, CountryInfo> = {
       rangeMargin: 25,
       airportSurcharge: 0,
     },
+    telephone: {
+      phone: "+34632422203",
+      displayPhone: "+34 632 422203",
+    },
     vehicleDescription: `Mercedes MPV vehicles seat up to six passengers, when all seats
               are in use. Alternatively the seats can also be turned into a
               conference seating position at the clients request. The boot
               offers good luggage space.`,
     capacityImage: "/images/vehicles/capacity.png",
-  },
-  NG: {
-    code: "NG",
-    name: "Nigeria",
-    locale: "en-NG",
-    currency: "NGN",
-    dateFormat: "DD/MM/YYYY",
-    vehicles: ["GAC GS4", "Toyota LC Prado"],
-    pricing: {
-      base: { "GAC GS4": 20000, "Toyota LC Prado": 50000 },
-      perKm: 1500,
-      rangeMargin: 5000,
-      airportSurcharge: 0,
-    },
-    vehicleDescription: `The new Toyato Land Cruiser Prado is a full-size SUV that seats up to 5 passengers. 
-    It is equipped with a powerful engine and advanced safety features, making it perfect for both city driving and off-road adventures.`,
-    capacityImage: "/images/vehicles/t-prado-capacity.jpg",
   },
 };
 

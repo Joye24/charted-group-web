@@ -11,25 +11,25 @@ export default function MainPartnersFooter() {
           alt="ebaa"
           width={100}
           height={100}
-          className="w-[100px] h-[100px] object-contain"
+          className="w-[100px] h-[100px] object-contain filter grayscale"
         />
       </div>
       <div className="w-full md:w-1/3 flex justify-center lg:justify-start">
         <Image
-          src="https://simplyjet-sos-new.sos-ch-gva-2.exoscale-cdn.com/website/media/1715171677323~My_climate.svg"
-          alt="my climate"
-          width={100}
-          height={100}
-          className="w-[100px] h-[100px] object-contain"
+          src="/images/partners/nig-embassy.png"
+          alt="nigerian embassy"
+          width={80}
+          height={80}
+          className="w-[80px] h-[80px] object-contain filter grayscale"
         />
       </div>
       <div className="w-full md:w-1/3 flex justify-center lg:justify-start">
         <Image
-          src="https://simplyjet-sos-new.sos-ch-gva-2.exoscale-cdn.com/website/media/1715171682924~Bitpay.svg"
+          src="/images/partners/warner-bros.svg"
           alt="bit pay"
-          width={100}
-          height={100}
-          className="w-[100px] h-[100px] object-contain"
+          width={75}
+          height={75}
+          className="w-[75px] h-[75px] object-contain filter grayscale"
         />
       </div>
     </div>

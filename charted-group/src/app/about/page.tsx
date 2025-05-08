@@ -89,10 +89,10 @@ export default function About() {
                 className={`${ibmPlexSerif.className} leading-relaxed text-xl lg:text-4xl font-thin`}>
                 At Charted Group, we believe that every road should be traveled
                 in comfort and confidence. Our team strives daily to exceed
-                expectations, providing tailored car services that blend
-                impeccable safety and genuine hospitality. This unwavering
-                commitment to excellence is how we’ve earned our clients’ trust
-                and continue to evolve in the world of luxury ground travel.
+                expectations, providing tailored car services that partners up
+                with our safety and genuine hospitality. This commitment to
+                excellence is how we’ve earned our clients’ trust and continue
+                to evolve in the world of luxury ground travel.
               </p>
             </FadeUpOnScroll>
           </div>

@@ -112,7 +112,10 @@ export default function BookingForm() {
       if (destInputRef.current) {
         ac2 = new places.Autocomplete(destInputRef.current, {
           fields: ["formatted_address", "geometry.location"],
-          //componentRestrictions: { country: country.code },
+          /* THIS IS WHERE WE RESTRICT THE COUNTRY SHOWNIN DESTINATION */
+          componentRestrictions: {
+            country: country.code,
+          },
         });
         ac2.addListener("place_changed", () => {
           const p = ac2!.getPlace();
@@ -305,7 +308,9 @@ export default function BookingForm() {
     });
 
     if (res.ok) {
-      toast.success("Booking sent!");
+      toast.success(
+        "Thank you for choosing Charted Group! Your booking has been received, and our team will contact you shortly to assist with any details."
+      );
       setFirstName("");
       setLastName("");
       setEmail("");
@@ -334,7 +339,7 @@ export default function BookingForm() {
   }
 
   return (
-    <div className="relative flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-12 bg-white/95 lg:bg-white/95 h-full">
+    <div className="relative flex-1 flex flex-col items-center lg:items-start rounded-2xl py-5 px-4 md:px-8 bg-white/95 lg:bg-white/95 h-full">
       {isCalculating && (
         <div className="absolute inset-0 z-10 bg-white/70 flex items-center justify-center">
           {/* simple SVG spinner */}

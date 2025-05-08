@@ -6,6 +6,7 @@ import Image from "next/image";
 import Modal from "./Modal";
 import BookingForm from "./BookingForm";
 import CountrySwitcher from "./footer/CountrySwitcher";
+import { COUNTRY_MAP } from "@/app/context/CountryContext";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export default function MobileMenu({
   onClose,
 }: MobileMenuProps) {
   const [showModal, setShowModal] = useState(false);
+  const countries = Object.values(COUNTRY_MAP);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -180,73 +182,30 @@ export default function MobileMenu({
           <div className="flex flex-col justify-between h-full p-6 text-blue-950">
             <div className="mt-25 space-y-6 overflow-auto">
               <ul className="space-y-2 text-blue-950">
+                {countries.map((c) => (
+                  <li
+                    key={c.code}
+                    className="rounded-4xl bg-white shadow-inherit px-4 py-1">
+                    <Link
+                      href={`tel:${c.telephone.phone}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={onClose}
+                      className="flex gap-2 px-4 py-2 decoration-none">
+                      <Image
+                        alt={`${c.code} flag`}
+                        src={`/images/flags/${c.code.toLowerCase()}.svg`}
+                        width={17}
+                        height={17}
+                      />
+                      <span>{c.telephone.displayPhone}</span>
+                    </Link>
+                  </li>
+                ))}
+
                 <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
                   <Link
-                    href="tel:+35300000000000"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none">
-                    <Image
-                      alt="IE Phone"
-                      src="/images/flags/ie.svg"
-                      width={17}
-                      height={17}
-                    />{" "}
-                    <span>+353 00 0000000</span>
-                  </Link>
-                </li>
-                <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
-                  <Link
-                    href="tel:+23400000000000"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none">
-                    <Image
-                      alt="NG Phone"
-                      src="/images/flags/ng.svg"
-                      width={17}
-                      height={17}
-                    />{" "}
-                    <span>+234 00 0000000</span>
-                  </Link>
-                </li>
-                <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
-                  <Link
-                    href="tel:+44 00000000000"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none">
-                    <Image
-                      alt="GB Phone"
-                      src="/images/flags/gb.svg"
-                      width={17}
-                      height={17}
-                    />{" "}
-                    <span>+44 00 0000000</span>
-                  </Link>
-                </li>
-                <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
-                  <Link
-                    href="tel:+33300000000000"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={onClose}
-                    className="flex gap-2 px-4 py-2 decoration-none">
-                    <Image
-                      alt="ES Phone"
-                      src="/images/flags/es.svg"
-                      width={17}
-                      height={17}
-                    />{" "}
-                    <span>+33 00 0000000</span>
-                  </Link>
-                </li>
-                <li className="rounded-4xl bg-white shadow-inherit px-4 py-1">
-                  <Link
-                    href="https://wa.me/41782510888"
+                    href="https://wa.me/+535834533589"
                     target="_blank"
                     rel="noreferrer"
                     onClick={onClose}
@@ -322,9 +281,9 @@ export default function MobileMenu({
         {showModal && (
           <Modal onClose={() => setShowModal(false)}>
             <button
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 z-10"
               onClick={() => setShowModal(false)}>
-              &times;
+              <span className="text-3xl">&times;</span>
             </button>
             <BookingForm />
           </Modal>

@@ -1,57 +1,26 @@
 [
-    {
-      "title": "Outstanding Experience",
-      "message": "I was so impressed with the professionalism and personal touch. Everything went smoothly from start to finish.",
-      "name": "John D.",
-      "rating": 5
-    },
-    {
-      "title": "Highly Recommend",
-      "message": "Their attention to detail is second to none. This is definitely the best service I've used in years!",
-      "name": "Emily R.",
-      "rating": 4.8
-    },
-    {
-      "title": "Simply Unforgettable",
-      "message": "A top-tier, hassle-free approach. The staff were warm and caring, and the results were fantastic.",
-      "name": "Sophia K.",
-      "rating": 4.5
-    },
-    {
-      "title": "Best Decision Ever",
-      "message": "This was such a game changer. I’m already telling all my colleagues about it!",
-      "name": "Daniel P.",
-      "rating": 5
-    },
-    {
-      "title": "Professional and Polite",
-      "message": "They answered every question I had. The entire journey was stress-free and beyond my expectations.",
-      "name": "Sarah L.",
-      "rating": 4.2
-    },
-    {
-      "title": "Above and Beyond",
-      "message": "Every detail was handled meticulously. I felt like a VIP the entire time!",
-      "name": "Alex C.",
-      "rating": 4.7
-    },
-    {
-      "title": "World-Class Service",
-      "message": "I could not believe how effortless everything was. Their expertise really shines through.",
-      "name": "Patricia W.",
-      "rating": 4.9
-    },
-    {
-      "title": "Incredibly Reliable",
-      "message": "They made the process so easy. I was confident from the get-go and they never disappointed.",
-      "name": "Marcus B.",
-      "rating": 4.3
-    },
-    {
-      "title": "My Go-To Provider",
-      "message": "Now I'm spoiled! No one else comes close to matching this quality and care.",
-      "name": "Isabella F.",
-      "rating": 5
-    }
-  ]
-  
+  {
+    "title": "Outstanding Experience",
+    "message": "I was so impressed with the professionalism and personal touch. Everything went smoothly from start to finish.",
+    "name": "Barbara, Petsafe",
+    "rating": 5
+  },
+  {
+    "title": "Highly Recommend",
+    "message": "Their attention to detail is second to none. This is definitely the best service I've used in years!",
+    "name": "Fatima, Nigerian Embassy",
+    "rating": 4.8
+  },
+  {
+    "title": "Simply Unforgettable",
+    "message": "A top-tier, hassle-free approach. The staff were warm and caring, and the results were fantastic.",
+    "name": "Mary, NCAA",
+    "rating": 4.5
+  },
+  {
+    "title": "Above and Beyond",
+    "message": "Every detail was handled exteremly well. My clients felt like a VIP the entire time.",
+    "name": "Alex, Krocher Scotland Tours",
+    "rating": 4.7
+  }
+]

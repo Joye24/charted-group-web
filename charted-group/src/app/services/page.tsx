@@ -81,51 +81,63 @@ export default function About() {
             Who we are
           </h2>
           <p className="font-light md:font-thin text-md md:text-xl mb-10">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-          <p className="font-light md:font-thin text-md md:text-xl mb-10">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            Charted Group was established in 2022 in Dublin, Ireland, with a
+            vision to provide unparalleled luxury ground transportation services
+            to high-end clients who expect nothing but the best. From the very
+            beginning, we set out to redefine the standard for chauffeur-driven
+            experiences, ensuring every journey is not only comfortable and
+            reliable but also an exceptional experience from start to finish.
+            <br />
+            <br />
+            Our first major client was the Minister of Petroleum for Nigeria, a
+            landmark moment that highlighted our commitment to excellence and
+            professional service. Since then, we have been privileged to serve
+            an exclusive roster of remarkable individuals, high-profile
+            executives, celebrities, and world-renowned companies. Our clients
+            trust us to offer a seamless, luxurious, and discreet transportation
+            solution, and we consistently meet and exceed those expectations.
+            <br />
+            <br />
+            In the short time since our inception, Charted Group has completed
+            over 1,100 transfers. Each transfer represents our dedication to
+            precision, punctuality, and personalized service. We are proud of
+            the relationships we’ve built with our clients and the strong
+            reputation we’ve established in the luxury transportation industry.
+            <br />
+            <br />
+            At Charted Group, we are more than just a chauffeur service. We are
+            a symbol of sophistication, luxury, and reliability. Whether you’re
+            traveling for business or leisure, we ensure your journey is as
+            memorable as the destination.
           </p>
           <h2 className="text-2xl md:text-5xl mb-5 md:mb-7 font-light">
             What we do
           </h2>
           <p className="font-light md:font-thin text-md md:text-xl mb-10">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </p>
-          <p className="font-light md:font-thin text-md md:text-xl mb-10">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry standard dummy text ever
-            since the 1500s, when an unknown printer took a galley of type and
-            scrambled it to make a type specimen book. It has survived not only
-            five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            ​​At Charted Group, we specialize in delivering a wide range of
+            luxury ground transportation services tailored to meet the diverse
+            needs of our clients. Whether you require a simple one-way transfer
+            or a bespoke, full-day itinerary, we bring the same level of
+            professionalism, discretion, and attention to detail to every
+            journey.
+            <br />
+            <br />
+            We offer one-way trips, return journeys, private chauffeured tours,
+            golf outings, government assignments, and exclusive private
+            transportation solutions. For clients with heightened needs, we also
+            provide optional security services alongside our vehicles, ensuring
+            peace of mind throughout your trip.
+            <br />
+            <br />
+            Our team is experienced in managing special occasions such as
+            birthdays, weddings, and milestone celebrations, where elegance,
+            punctuality, and a seamless experience are essential. We understand
+            that these moments are once-in-a-lifetime, and we are honored to
+            play a role in making them unforgettable. From corporate executives
+            to government officials, from leisure travelers to VIP guests,
+            Charted Group is trusted to deliver luxury, safety, and precision
+            every step of the way. Our mission is simple: to elevate your travel
+            experience, no matter the occasion.
           </p>
         </div>
       </div>

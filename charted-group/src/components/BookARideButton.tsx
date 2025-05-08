@@ -14,7 +14,7 @@ export default function BookARideButton() {
     else lenis?.start();
     return () => lenis?.start();
   }, [showModal]);
-  
+
   return (
     <>
       <button
@@ -27,8 +27,7 @@ export default function BookARideButton() {
           tracking-[3px]
           px-6
           py-2
-        "
-      >
+        ">
         <span className="text-[12px] font-[600]">BOOK YOUR RIDE</span>
       </button>
 
@@ -36,10 +35,9 @@ export default function BookARideButton() {
         <Modal onClose={() => setShowModal(false)}>
           {/* You can add a custom close button inside if you like */}
           <button
-            className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
-            onClick={() => setShowModal(false)}
-          >
-            &times;
+            className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 z-10"
+            onClick={() => setShowModal(false)}>
+            <span className="text-3xl">&times;</span>
           </button>
           <BookingForm />
         </Modal>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { createPortal } from "react-dom";
+import { COUNTRY_MAP } from "@/app/context/CountryContext";
 
 interface PhoneMenuProps {
   isOpen: boolean;
@@ -16,6 +17,8 @@ export default function PhoneMenu({
   dropdownPosition,
 }: PhoneMenuProps) {
   if (!isOpen) return null;
+
+  const countries = Object.values(COUNTRY_MAP);
 
   return createPortal(
     <div className="fixed inset-0 z-[2] text-sm" onClick={onClose}>
@@ -31,74 +34,27 @@ export default function PhoneMenu({
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
       >
         <ul className="space-y-2 text-blue-950">
+          {countries.map((c) => (
+            <li
+              key={c.code}
+              className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
+              <Link
+                href={`tel:${c.telephone.phone}`}
+                onClick={onClose}
+                className="flex items-center gap-2 px-4 py-2 decoration-none">
+                <Image
+                  alt={`${c.code} flag`}
+                  src={`/images/flags/${c.code.toLowerCase()}.svg`}
+                  width={17}
+                  height={17}
+                />
+                <span>{c.telephone.displayPhone}</span>
+              </Link>
+            </li>
+          ))}
           <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
             <Link
-              href="tel:+35300000000000"
-              target="_blank"
-              rel="noreferrer"
-              onClick={onClose}
-              className="flex gap-2 px-4 py-2 decoration-none">
-              <Image
-                alt="IE Phone"
-                src="/images/flags/ie.svg"
-                width={17}
-                height={17}
-              />{" "}
-              <span>+353 00 0000000</span>
-            </Link>
-          </li>
-
-          <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
-            <Link
-              href="tel:+23400000000000"
-              target="_blank"
-              rel="noreferrer"
-              onClick={onClose}
-              className="flex gap-2 px-4 py-2 decoration-none">
-              <Image
-                alt="NG Phone"
-                src="/images/flags/ng.svg"
-                width={17}
-                height={17}
-              />{" "}
-              <span>+234 00 0000000</span>
-            </Link>
-          </li>
-          <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
-            <Link
-              href="tel:+4400000000000"
-              target="_blank"
-              rel="noreferrer"
-              onClick={onClose}
-              className="flex gap-2 px-4 py-2 decoration-none">
-              <Image
-                alt="GB Phone"
-                src="/images/flags/gb.svg"
-                width={17}
-                height={17}
-              />{" "}
-              <span>+44 00 0000000</span>
-            </Link>
-          </li>
-          <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
-            <Link
-              href="tel:+33300000000000"
-              target="_blank"
-              rel="noreferrer"
-              onClick={onClose}
-              className="flex gap-2 px-4 py-2 decoration-none">
-              <Image
-                alt="ES Phone"
-                src="/images/flags/es.svg"
-                width={17}
-                height={17}
-              />{" "}
-              <span>+33 00 0000000</span>
-            </Link>
-          </li>
-          <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
-            <Link
-              href="https://wa.me/41782510888"
+              href="https://wa.me/+535834533589"
               target="_blank"
               rel="noreferrer"
               onClick={onClose}
