@@ -24,7 +24,6 @@ export default function MenuHeader() {
     else lenis?.start();
     return () => lenis?.start();
   }, [phoneMenuOpen]);
-  
 
   // Calculate dropdown position when menu is open.
   useEffect(() => {
@@ -48,7 +47,7 @@ export default function MenuHeader() {
             src="/images/ce-logo-dark.png"
             width={40}
             height={40}
-            className="w-[40px]"
+            className="w-[40px] h-auto"
           />
         </Link>
 

@@ -54,7 +54,7 @@ export default function PhoneMenu({
           ))}
           <li className="rounded-4xl hover:bg-gray-100 shadow-inherit px-4 py-1">
             <Link
-              href="https://wa.me/+535834533589"
+              href="https://wa.me/353834533589"
               target="_blank"
               rel="noreferrer"
               onClick={onClose}

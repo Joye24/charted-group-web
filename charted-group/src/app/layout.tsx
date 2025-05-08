@@ -15,9 +15,11 @@ export const metadata: Metadata = {
     shortcut: "/images/ce-logo-white-bg.png",
     apple: "/images/ce-logo-white-bg.png",
   },
-  title: "Charted Group | Transportation - Think Charted",
+  title: "Charted Group | Luxury Chauffeur Services",
   description:
-    "Experience premium ground transportation in Ireland with our on-demand fleet, fare calculator, and hospitality services. Charted Group ensures seamless, reliable, and luxurious travel for business, events, and tours.",
+    "Luxury chauffeur services across Ireland, Nigeria, UK, and Spain. Executive transfers, weddings, private tours & secure transport.",
+  keywords:
+    "luxury chauffeur Ireland, private driver Nigeria, executive transportation UK, wedding car Spain, VIP transport, secure ground travel, Charted Group, chauffeur services, luxury travel, private chauffeur, executive transfers, wedding transportation, private tours, secure transport, luxury car hire",
 };
 
 export default function RootLayout({
@@ -29,18 +31,25 @@ export default function RootLayout({
     <html lang="en" className={inter.className}>
       <head>
         <meta charSet="utf-8"></meta>
-        <meta property="og:title" content={`${metadata.title}`}></meta>
-        <meta property="og:site_name" content={`${metadata.title}`}></meta>
-        <meta name="og:description" content={`${metadata.description}`}></meta>
-        <meta property="og:locale" content="en"></meta>
-        <meta name="robots" content="index, follow, nocache"></meta>
-        <meta name="googlebot" content="index, follow, nocache"></meta>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1"></meta>
+        <title>Charted Group | Luxury Chauffeur Services</title>
+        <meta name="description" content={`${metadata.description}`}></meta>
+        <meta name="keywords" content={`${metadata.keywords}`}></meta>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"></meta>
+        <meta name="author" content="Charted Group" />
+
+        <meta property="og:title" content={`${metadata.title}`}></meta>
+        <meta property="og:site_name" content={`${metadata.title}`}></meta>
+        <meta name="og:description" content={`${metadata.description}`}></meta>
+        <meta property="og:image" content="/images/ce-logo-white-bg.png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://chartedgroup.site" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:locale" content="en"></meta>
+
+        <meta name="robots" content="index, follow, nocache"></meta>
+        <meta name="googlebot" content="index, follow, nocache"></meta>
       </head>
       <body>
         <Suspense fallback={/* you can put a spinner or null here */ null}>
